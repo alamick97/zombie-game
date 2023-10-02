@@ -23,6 +23,7 @@ int main (int argc, char** argv) {
 		//start new round
 		//read in new zombies (if apploiabel)
 			//create zombie from cin info
+				//NOTE: remember to increment rounds active at some point during the round, for each active zombie!
 			//then push into deque
 		//when create zombies, push into master
 		//	then push the zombie ptrs into active_list (PQ) {make sure the address of the zombie pushed into master list is same as 
@@ -47,18 +48,16 @@ int main (int argc, char** argv) {
 
 		//pseudo: If zombie health is 0 (after shooting), then move it from the active list to inactive list.
 
-		//NOTE: if condition for 
-		//(step 1):
-		//(step 2):
-		//(step 3):
-		//(step 4): if you are dead, BREAK from loop.
-		//(step 5):
-		//if dead break out (step 4)
-	}
-	//NOTE: can implement everything w/o statistics and median, just do that afterwords
+		//STEPS LAID OUT IN SPEC:
+		//(step 1): player refills quiver so it contains quiver_capacity arrows
+		//(step 2): existing zombies move toward the player and attack if they have reached the player
+		//(step 3): new zombies appear
+		//(step 4): player shoots zombies with arrows
+					//NOTE: At STEP 4, if player is dead, BREAK from the loop.
 
-	// Testing==========BEGIN===================================================
-	// Testing==========END=====================================================
+		//(STEP 5 (additional, paoletti description)): "check round with next round", current round is incremented with each while loop.
+	}
+	//NOTE: can implement everything w/o statistics and median, just do that afterwords (only implement w/ verbose, helps debugging)
 
 	return 0;
 }

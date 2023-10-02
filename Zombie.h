@@ -10,8 +10,9 @@ class Zombie {
 private:
     std::string _name;
     uint32_t _distance;
-    uint32_t _speed;
-    uint32_t _health;
+    uint32_t _speed; //must be >0
+    uint32_t _health;//must be >0
+    uint32_t _rounds_active;
 
 public:
     Zombie(std::string name, uint32_t distance, uint32_t speed, uint32_t health) 
