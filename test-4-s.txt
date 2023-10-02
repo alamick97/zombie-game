@@ -1,0 +1,28 @@
+# Project 2 Test 2 
+quiver-capacity: 42
+random-seed: 14423 
+max-rand-distance: 465
+max-rand-speed: 34
+max-rand-health: 20
+---
+round: 4
+random-zombies: 25
+named-zombies: 3
+MarkMark distance: 150 speed: 300 health: 15
+markRod distance: 2 speed: 3 health: 6
+Bovodobo distance: 100 speed: 1 health: 100
+---
+round: 6
+random-zombies: 10
+named-zombies: 1
+JamesDuderstadt distance: 20 speed: 10 health: 20
+---
+round: 7
+random-zombies: 12
+named-zombies: 0
+---
+round: 10
+random-zombies: 1
+named-zombies: 2
+robo535 distance: 40 speed: 8 health: 3
+Roger41 distance: 50 speed: 80 health: 1

@@ -3,7 +3,8 @@
 #include "Game.h"
 #include <string>
 
-Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) {
+
+Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constructor
     //default initialization of options flags
     _verbose_flag = false;
     _stats_flag = false;
@@ -44,9 +45,4 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) {
 	}
 }
 
-//=====================================================================================
-//===============TESTING FUNCTIONS START==================================
-uint32_t Game::getStatsArg() const {
-    return _stats_arg;
-}
-//===============TESTING FUNCTIONS END==================================
+bool Game::allZombiesDead() const { return active_list.empty(); }
