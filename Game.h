@@ -27,9 +27,9 @@ private:
     //OutputMode _output_mode; //to remove
     //TODO: Implement:
     //          1) Master zombie list! -> Deque?
-    std::deque<Zombie> master_list;
+    std::deque<Zombie> master_deque; //deque bc it's dynamic & doesn't reallocate memory addresses (it uses "chunks")
     //          2) Active list! (Alive) -> PQ?
-    std::priority_queue<Zombie*> active_list; 
+    std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> active_queue; 
     //          3) Inactive List (Dead) (no need for Inactive list)
         //make seperate classes for STATS and MEDIAN. STATS should have 2 deques with size of stats input arg int. 
 
