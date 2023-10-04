@@ -9,15 +9,10 @@ int main (int argc, char** argv) {
 
 	Game game(argc, argv); //creates game object on the stack
 
-	//TODO: Use getline, or whatever, to skip the first line comment. Try a small vim folder to make sure this works.
-	
-
-
-	//TODO: Read in preliminary game info (quiver_capacity, random_seed, max_rand_dist/speed/health
-
-
+	game.setGameInfo(); //unit tested. gets quiv. cap., rand seed, max rands. 
 
 	//NOTE: This while loop is made to go per-round
+	//Note: Each round necessarily starts with a row of "---", which should be skipped(?)
 	//cin.fail (no more rounds) && all zombies dead (active list is empty)
 	while (!std::cin.fail() && !game.allZombiesDead()) {
 		//start new round

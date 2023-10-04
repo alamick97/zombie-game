@@ -45,4 +45,14 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 	}
 }
 
+void Game::setGameInfo() {
+	std::getline(std::cin, _junk);
+		
+	std::cin >> _junk >> _quiver_capacity;
+	std::cin >> _junk >> _rand_seed;
+	std::cin >> _junk >> _max_rand_dist; //order is distance, speed, health
+	std::cin >> _junk >> _max_rand_speed;
+	std::cin >> _junk >> _max_rand_health;
+}
+
 bool Game::allZombiesDead() const { return active_list.empty(); }

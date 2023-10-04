@@ -9,7 +9,7 @@
 #include <getopt.h>
 #include <deque>
 #include <queue> //for std::priority_queue
-
+#include <string>
 
 class Game {
 private:
@@ -22,7 +22,12 @@ private:
     uint32_t _stats_arg;
 
     //...
-    uint32_t quiver_capacity;
+    std::string _junk;
+    uint32_t _quiver_capacity;
+    uint32_t _rand_seed;
+    uint32_t _max_rand_dist;
+    uint32_t _max_rand_speed;
+    uint32_t _max_rand_health;
 
     //OutputMode _output_mode; //to remove
     //TODO: Implement:
@@ -39,9 +44,9 @@ public:
     Game(int argc, char** argv); //default constructor 
     
     //TODO implement function to setGameInfo (quiver capacity, seed, max rand ___)
-    void setGameInfo();
+    void setGameInfo(); //TODO: Implement
     bool allZombiesDead() const; //returns true if active_list is empty
-    void printOutput();//prints output according to input option flags.
+    void printOutput();//prints output according to input option flags. //TODO: Implement
 };
 
 
