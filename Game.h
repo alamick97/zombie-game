@@ -21,13 +21,16 @@ private:
     bool _median_flag;
     uint32_t _stats_arg;
 
-    //...
+    //game info (set from setGameInfo())
     std::string _junk;
     uint32_t _quiver_capacity;
     uint32_t _rand_seed;
     uint32_t _max_rand_dist;
     uint32_t _max_rand_speed;
     uint32_t _max_rand_health;
+
+    //player info
+    uint32_t _quiver_load;
 
     //OutputMode _output_mode; //to remove
     //TODO: Implement:
@@ -44,7 +47,9 @@ public:
     Game(int argc, char** argv); //default constructor 
     
     //TODO implement function to setGameInfo (quiver capacity, seed, max rand ___)
+    bool getMedianFlag();
     void setGameInfo(); //TODO: Implement
+    void refillQuiver();
     bool allZombiesDead() const; //returns true if active_list is empty
     void printOutput();//prints output according to input option flags. //TODO: Implement
 };

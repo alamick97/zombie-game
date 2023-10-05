@@ -45,6 +45,10 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 	}
 }
 
+bool Game::getMedianFlag() { return _median_flag; }
+
+void Game::refillQuiver() { _quiver_load = _quiver_capacity; }
+
 void Game::setGameInfo() {
 	std::getline(std::cin, _junk);
 		

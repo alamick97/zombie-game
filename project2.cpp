@@ -11,11 +11,37 @@ int main (int argc, char** argv) {
 
 	game.setGameInfo(); //unit tested. gets quiv. cap., rand seed, max rands. 
 
+
+	uint32_t curr_round = 0;
+	uint32_t next_round = 0;
+
 	//NOTE: This while loop is made to go per-round
 	//Note: Each round necessarily starts with a row of "---", which should be skipped(?)
 	//cin.fail (no more rounds) && all zombies dead (active list is empty)
 	while (!std::cin.fail() && !game.allZombiesDead()) {
 		//start new round
+		curr_round++;
+		
+
+
+		//(step 1): player refills quiver so it contains quiver_capacity arrows
+		game.refillQuiver();
+		//(step 2): existing zombies move toward the player and attack if they have reached the player
+		//(step 3): new zombies appear
+		//(step 4): player shoots zombies with arrows
+					//NOTE: At STEP 4, if player is dead, BREAK from the loop.
+		
+		
+
+
+
+		//check if round equals round number?
+
+
+
+		//IF NEW ZOMBIES GENERATED (CURR_ROUND == NEXT_ROUND):
+			//
+
 		//read in new zombies (if apploiabel)
 			//create zombie from cin info
 				//NOTE: remember to increment rounds active at some point during the round, for each active zombie!
@@ -42,15 +68,20 @@ int main (int argc, char** argv) {
 		//pseudo: from cin, add zombies to the master & active lists (at same time?)
 
 		//pseudo: If zombie health is 0 (after shooting), then move it from the active list to inactive list.
-
+		/*
 		//STEPS LAID OUT IN SPEC:
 		//(step 1): player refills quiver so it contains quiver_capacity arrows
 		//(step 2): existing zombies move toward the player and attack if they have reached the player
 		//(step 3): new zombies appear
 		//(step 4): player shoots zombies with arrows
 					//NOTE: At STEP 4, if player is dead, BREAK from the loop.
-
+		*/
 		//(STEP 5 (additional, paoletti description)): "check round with next round", current round is incremented with each while loop.
+
+
+		if (game.getMedianFlag()) {
+			std::cout << "At the end of round ..., median life is ...\n"; //for median. TODO: Implement/finish
+		}
 	}
 	//NOTE: can implement everything w/o statistics and median, just do that afterwords (only implement w/ verbose, helps debugging)
 
