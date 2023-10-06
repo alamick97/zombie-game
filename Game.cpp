@@ -57,7 +57,26 @@ uint32_t Game::getMaxSpeed() const { return _max_rand_speed; }
 uint32_t Game::getMaxHealth() const { return _max_rand_health; }
 
 void Game::shootZombies() { 
-	//TODO: implement
+	//TODO: finish implementing
+	//NOTE: Maybe use min(distance,speed), or if (distance < speed) { distance = 0; return distance? }
+	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
+		Zombie* tempZomb = _active_queue.top();//get zombie from active list (PQ)
+		uint32_t tempHealth = tempZomb->getHealth();
+		//2 Cases: 
+		if (_quiver_load >= tempZomb->getHealth()) { //if quiver load is more than zombie's health
+			_quiver_load = _quiver_load - tempZomb->getHealth(); //adjust quiver load
+			tempHealth = 0; //set health accordingly 
+		} else if (_quiver_load < tempZomb->getHealth()) {
+			tempHealth = tempHealth - _quiver_load; //set health accordingly
+		}
+
+		tempZomb->setHealth(tempHealth);//updates heath accordingly
+
+		if (tempHealth == 0) {
+			_inactive_deque.push_front(_active_queue.top()); //for first/last killed list
+			_active_queue.pop();//pop zombie
+		}
+	}
 }
 
 void Game::setGameInfo() {
@@ -70,4 +89,4 @@ void Game::setGameInfo() {
 	std::cin >> _junk >> _max_rand_health;
 }
 
-bool Game::allZombiesDead() const { return active_list.empty(); }
+bool Game::noZombiesActive() const { return _active_queue.empty(); }

@@ -31,10 +31,9 @@ int main (int argc, char** argv) {
 	uint32_t current_round = 0;
 	uint32_t next_round = 0;
 	bool playerIsDead = false;
-	bool zombiesAreAlive = true;
 	Round round;
 
-	while (!std::cin.fail() && zombiesAreAlive) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
+	while (!std::cin.fail() && !game.noZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
 		//start new round
 		current_round++;
 		//STEP 1: print round
@@ -44,7 +43,7 @@ int main (int argc, char** argv) {
 		//STEP 3: move zombies and check if you get killed (distance for any zombie = 0)
 		game.moveZombies(); //TODO: Implement!
 		//STEP 4: check if you're dead (distance for any zombie = 0)
-		if (game.youDied()) { break; } //checks if any zombie dist = 0 after movement.
+		if (game.youDied()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first. 
 		
 		if (round.next_round == 0) {
 			std::getline(std::cin, junk);	//removes "---" line
@@ -80,11 +79,15 @@ int main (int argc, char** argv) {
 				//TODO: push to appropriate zombie list(s)
 				if (game.verboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); }
 			}
-			if (game.youDied()) { break; } //checks, after spawning new zombie, for EDGE CASE of zombie spawning with dist = 0.
+
+			//TODO: DESTROY ZOMBIES HERE 
+			//STEP 6: Shoot zombies
+			game.shootZombies();
+
+			//TODO: print median here
+			//print median stuff here
 		}
 
-		//STEP 6: Shoot zombies
-		game.shootZombies();
 
 		//print victory/defeat output
 		if (game.youDied()) {

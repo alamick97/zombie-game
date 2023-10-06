@@ -37,10 +37,12 @@ private:
     //OutputMode _output_mode; //to remove
     //TODO: Implement:
     //          1) Master zombie list! -> Deque?
-    std::deque<Zombie> master_deque; //deque bc it's dynamic & doesn't reallocate memory addresses (it uses "chunks")
+    std::deque<Zombie> _master_deque; //deque bc it's dynamic & doesn't reallocate memory addresses (it uses "chunks")
     //          2) Active list! (Alive) -> PQ?
-    std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> active_queue; 
+    std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> _active_queue; 
     //          3) Inactive List (Dead) (no need for Inactive list)
+    std::deque<Zombie*> _inactive_deque; //making inactive list anyways, even though suboptimal memory. Need to get this done before optimizing. 
+                                         //mainly used for first/last killed list. (STATS mode)
         //make seperate classes for STATS and MEDIAN. STATS should have 2 deques with size of stats input arg int. 
 
     //need 2 other PQ's for Most (1 PQ) & Least (1 PQ) active
@@ -61,7 +63,7 @@ public:
     void refillQuiver();
     void moveZombies();
     bool youDied() const;
-    bool allZombiesDead() const; //returns true if active_list is empty
+    bool noZombiesActive() const; //returns true if active_list is empty
     void printOutput();//prints output according to input option flags. //TODO: Implement
 };
 

@@ -2,6 +2,10 @@
 
 #include "Zombie.h"
 
+void Zombie::setDistance(uint32_t newDistance) { _distance = newDistance; }
+void Zombie::setHealth(uint32_t newHealth) { _health = newHealth; }
+void Zombie::incrementRoundsActive() { _rounds_active++; }
+
 uint32_t Zombie::getHealth() const { return _health; }
 std::string Zombie::getName() const { return _name; }
 float Zombie::getETA() const { return static_cast<float>(_distance) / _speed; }
@@ -17,19 +21,6 @@ struct ZombieComparator {
         uint32_t health2 = z2->getHealth();
         if (health1 < health2) { return true; } //second, compare health
         else if (health1 > health2) { return false; }
-
-        return z1->getName() < z2->getName(); //thirdly and lastly, compare names lexicographically
-
-
-
-
-        float eta1 = z1->getETA();
-        float eta2 = z2->getETA();
-        if (eta1 != eta2) { return eta1 < eta2; } //first, compare ETAs
-
-        uint32_t health1 = z1->getHealth();
-        uint32_t health2 = z2->getHealth();
-        if (health1 != health2) { return health1 < health2; } //second, compare health
 
         return z1->getName() < z2->getName(); //thirdly and lastly, compare names lexicographically
     }
