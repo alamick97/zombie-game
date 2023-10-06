@@ -1,12 +1,20 @@
 // 9504853406CBAC39EE89AA3AD238AA12CA198043
 
 #include "Game.h"
+#include "P2random.h"
 #include <iostream>
 
 struct Round {
 	uint32_t next_round = 0;
 	uint32_t num_rand_zombies = 0;
 	uint32_t num_named_zombies = 0;
+};
+
+void printCreated (std::string name, uint32_t dist, uint32_t speed, uint32_t health) const {
+	std::cout << "Created: " << name;
+	std::cout << " (distance: " << dist;
+	std::cout << ", speed: " << speed;
+	std::cout << ", health: " << health << ")\n";
 }
 
 int main (int argc, char** argv) {
@@ -15,6 +23,9 @@ int main (int argc, char** argv) {
 
 	Game game(argc, argv); //creates game object on the stack
 	game.setGameInfo(); //unit tested. gets quiv. cap., rand seed, max rands. 
+
+	P2random randZombGenerator;
+	randZombGenerator.initialize(game.getRandSeed(), game.getMaxDist(), game.getMaxSpeed(), game.getMaxHealth()); 
 
 	std::string junk;
 	uint32_t current_round = 0;
@@ -26,53 +37,65 @@ int main (int argc, char** argv) {
 	while (!std::cin.fail() && zombiesAreAlive) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
 		//start new round
 		current_round++;
-
 		//STEP 1: print round
 		std::cout << "Round " << current_round << "\n"; //prints round
-
 		//STEP 2: refill quiver
 		game.refillQuiver();
-
 		//STEP 3: move zombies and check if you get killed (distance for any zombie = 0)
 		game.moveZombies(); //TODO: Implement!
-
+		//STEP 4: check if you're dead (distance for any zombie = 0)
+		if (game.youDied()) { break; } //checks if any zombie dist = 0 after movement.
+		
 		if (round.next_round == 0) {
 			std::getline(std::cin, junk);	//removes "---" line
 			std::cin >> junk >> round.next_round;
 		}
-
+		//STEP 5: New zombies appear
 		if (round.next_round == current_round) {
 			std::cin >> junk >> round.num_rand_zombies;
 			std::cin >> junk >> round.num_named_zombies;
 
+			std::string zName;
+			uint32_t zDist;
+			uint32_t zSpeed;
+			uint32_t zHealth;
+
 			for (uint32_t i = 0; i < round.num_rand_zombies; ++i) { //create rand zombies
-				//TODO: 
-				//	- Create appropriate num of rand zombies here.
-				//		- make sure to cout to verbose mode (if verbose mode is enabled)
+				zName = randZombGenerator.getNextZombieName();
+				zDist = randZombGenerator.getNextZombieDistance();
+				zSpeed = randZombGenerator.getNextZombieSpeed();
+				zHealth = randZombGenerator.getNextZombieHealth();
+				Zombie randZombie(zName, zDist, zSpeed, zHealth);
+				//TODO: push to appropriate zombie list(s)
+				if (game.verboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); }
 			}
 
 			for (uint32_t i = 0; i < round.num_named_zombies; ++i) {
-				//TODO: 
-				//	- Create appropriate num of rand zombies here.
-				//		- make sure to cout to verbose mode (if verbose mode is enabled)
+				std::cin >> zName;
+				std::cin >> junk >> zDist;
+				std::cin >> junk >> zSpeed;
+				std::cin >> junk >> zHealth;
+
+				Zombie namedZombie(zName, zDist, zSpeed, zHealth); //initialize named zombie w/ zombie constructor
+				//TODO: push to appropriate zombie list(s)
+				if (game.verboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); }
 			}
+			if (game.youDied()) { break; } //checks, after spawning new zombie, for EDGE CASE of zombie spawning with dist = 0.
 		}
 
-		//(step 3): new zombies appear
-		//(step 4): player shoots zombies with arrows
-					//NOTE: At STEP 4, if player is dead, BREAK from the loop.
-		
+		//STEP 6: Shoot zombies
+		game.shootZombies();
 
-
-
-
-		//check if round equals round number?
-
-
+		//print victory/defeat output
+		if (game.youDied()) {
+			std::cout << "DEFEAT IN ROUND " << current_round << "! ";
+			std::cout << "... ate your brains!\n";
+		} else {
+			std::cout << "VICTORY IN ROUND " << current_round << "! ";
+			std::cout << "{name of zombie} was the last zombie.\n";
+		}
 
 		//IF NEW ZOMBIES GENERATED (CURR_ROUND == NEXT_ROUND):
-			//
-
 		//read in new zombies (if apploiabel)
 			//create zombie from cin info
 				//NOTE: remember to increment rounds active at some point during the round, for each active zombie!
@@ -110,7 +133,7 @@ int main (int argc, char** argv) {
 		//(STEP 5 (additional, paoletti description)): "check round with next round", current round is incremented with each while loop.
 
 
-		if (game.getMedianFlag()) {
+		if (game.medianOn()) {
 			std::cout << "At the end of round ..., median life is ...\n"; //for median. TODO: Implement/finish
 		}
 	}

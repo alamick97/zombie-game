@@ -19,6 +19,7 @@ private:
     bool _verbose_flag;
     bool _stats_flag;
     bool _median_flag;
+    bool _youDied_flag;
     uint32_t _stats_arg;
 
     //game info (set from setGameInfo())
@@ -48,11 +49,18 @@ public:
     Game(int argc, char** argv); //default constructor 
     
     //TODO implement function to setGameInfo (quiver capacity, seed, max rand ___)
-    bool getMedianFlag();
-    void Game::shootZombie(uint32_t bullets);
+    bool verboseOn() const;
+    bool statsOn() const;
+    bool medianOn() const;
+    uint32_t getRandSeed() const;
+    uint32_t getMaxDist() const; //ORDER SHOULD ALWAYS BE: Dist, Speed, Health
+    uint32_t getMaxSpeed() const;
+    uint32_t getMaxHealth() const;
+    void Game::shootZombies(); //uses quiver_load
     void setGameInfo(); //TODO: Implement
     void refillQuiver();
     void moveZombies();
+    bool youDied() const;
     bool allZombiesDead() const; //returns true if active_list is empty
     void printOutput();//prints output according to input option flags. //TODO: Implement
 };

@@ -9,7 +9,7 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
     _verbose_flag = false;
     _stats_flag = false;
     _median_flag = false;
-		
+	_youDied_flag = false;
 
     int opt;
 	int opt_idx;
@@ -46,8 +46,19 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 	}
 }
 
-bool Game::getMedianFlag() { return _median_flag; }
+bool Game::verboseOn() const { return _verbose_flag; }
+bool Game::statsOn() const { return _stats_flag; }
+bool Game::medianOn() const { return _median_flag; }
+bool Game::youDied() const { return _youDied_flag; }
 void Game::refillQuiver() { _quiver_load = _quiver_capacity; }
+uint32_t Game::getRandSeed() const { return _rand_seed; }
+uint32_t Game::getMaxDist() const { return _max_rand_dist; }
+uint32_t Game::getMaxSpeed() const { return _max_rand_speed; }
+uint32_t Game::getMaxHealth() const { return _max_rand_health; }
+
+void Game::shootZombies() { 
+	//TODO: implement
+}
 
 void Game::setGameInfo() {
 	std::getline(std::cin, _junk);
