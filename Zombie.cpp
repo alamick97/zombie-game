@@ -6,7 +6,6 @@ uint32_t Zombie::getHealth() const { return _health; }
 std::string Zombie::getName() const { return _name; }
 float Zombie::getETA() const { return static_cast<float>(_distance) / _speed; }
 
-
 struct ZombieComparator {
     bool operator()(const Zombie* z1, const Zombie* z2) {
         float eta1 = z1->getETA();

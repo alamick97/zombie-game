@@ -5,10 +5,11 @@
 
 
 Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constructor
-    //default initialization of options flags
+    //default initialization of values
     _verbose_flag = false;
     _stats_flag = false;
     _median_flag = false;
+		
 
     int opt;
 	int opt_idx;
@@ -46,7 +47,6 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 }
 
 bool Game::getMedianFlag() { return _median_flag; }
-
 void Game::refillQuiver() { _quiver_load = _quiver_capacity; }
 
 void Game::setGameInfo() {

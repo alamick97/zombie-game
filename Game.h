@@ -31,6 +31,7 @@ private:
 
     //player info
     uint32_t _quiver_load;
+    uint32_t _player_health;
 
     //OutputMode _output_mode; //to remove
     //TODO: Implement:
@@ -48,8 +49,10 @@ public:
     
     //TODO implement function to setGameInfo (quiver capacity, seed, max rand ___)
     bool getMedianFlag();
+    void Game::shootZombie(uint32_t bullets);
     void setGameInfo(); //TODO: Implement
     void refillQuiver();
+    void moveZombies();
     bool allZombiesDead() const; //returns true if active_list is empty
     void printOutput();//prints output according to input option flags. //TODO: Implement
 };

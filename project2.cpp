@@ -3,35 +3,66 @@
 #include "Game.h"
 #include <iostream>
 
+struct Round {
+	uint32_t next_round = 0;
+	uint32_t num_rand_zombies = 0;
+	uint32_t num_named_zombies = 0;
+}
+
 int main (int argc, char** argv) {
 	// Speeds up project's I/O
 	std::ios_base::sync_with_stdio(false);
 
 	Game game(argc, argv); //creates game object on the stack
-
 	game.setGameInfo(); //unit tested. gets quiv. cap., rand seed, max rands. 
 
-
-	uint32_t curr_round = 0;
+	std::string junk;
+	uint32_t current_round = 0;
 	uint32_t next_round = 0;
+	bool playerIsDead = false;
+	bool zombiesAreAlive = true;
+	Round round;
 
-	//NOTE: This while loop is made to go per-round
-	//Note: Each round necessarily starts with a row of "---", which should be skipped(?)
-	//cin.fail (no more rounds) && all zombies dead (active list is empty)
-	while (!std::cin.fail() && !game.allZombiesDead()) {
+	while (!std::cin.fail() && zombiesAreAlive) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
 		//start new round
-		curr_round++;
-		
+		current_round++;
 
+		//STEP 1: print round
+		std::cout << "Round " << current_round << "\n"; //prints round
 
-		//(step 1): player refills quiver so it contains quiver_capacity arrows
+		//STEP 2: refill quiver
 		game.refillQuiver();
-		//(step 2): existing zombies move toward the player and attack if they have reached the player
+
+		//STEP 3: move zombies and check if you get killed (distance for any zombie = 0)
+		game.moveZombies(); //TODO: Implement!
+
+		if (round.next_round == 0) {
+			std::getline(std::cin, junk);	//removes "---" line
+			std::cin >> junk >> round.next_round;
+		}
+
+		if (round.next_round == current_round) {
+			std::cin >> junk >> round.num_rand_zombies;
+			std::cin >> junk >> round.num_named_zombies;
+
+			for (uint32_t i = 0; i < round.num_rand_zombies; ++i) { //create rand zombies
+				//TODO: 
+				//	- Create appropriate num of rand zombies here.
+				//		- make sure to cout to verbose mode (if verbose mode is enabled)
+			}
+
+			for (uint32_t i = 0; i < round.num_named_zombies; ++i) {
+				//TODO: 
+				//	- Create appropriate num of rand zombies here.
+				//		- make sure to cout to verbose mode (if verbose mode is enabled)
+			}
+		}
+
 		//(step 3): new zombies appear
 		//(step 4): player shoots zombies with arrows
 					//NOTE: At STEP 4, if player is dead, BREAK from the loop.
 		
-		
+
 
 
 
