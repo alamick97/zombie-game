@@ -46,6 +46,16 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 	}
 }
 
+void Game::setGameInfo() {
+	std::getline(std::cin, _junk);
+		
+	std::cin >> _junk >> _quiver_capacity;
+	std::cin >> _junk >> _rand_seed;
+	std::cin >> _junk >> _max_rand_dist; //order is distance, speed, health
+	std::cin >> _junk >> _max_rand_speed;
+	std::cin >> _junk >> _max_rand_health;
+}
+
 bool Game::isVerboseOn() const { return _verbose_flag; }
 bool Game::isStatsOn() const { return _stats_flag; }
 bool Game::isMedianOn() const { return _median_flag; }
@@ -71,14 +81,11 @@ void Game::moveZombies() { //moves each active zombie by subtracting speed from 
 	}
 }
 
-//TODO: Make sure these parameter/arg types are correct! (ptr vs object)
-void Game::pushToMasterList(Zombie zombie) { //note: we are pushing to a STL deque that takes <Zombie>!
+void Game::pushToMasterList(Zombie* zombie) { //note: we are pushing to a STL deque that takes <Zombie>!
 	_master_deque.push_front(zombie); //hence, the master list has zombies ordered chronologically by order of creation (front to back).`
 }
 
-//TODO: Make sure these parameter/arg types are correct! (ptr vs object)
 void Game::pushToActiveList(Zombie* zombie) { //note: we are pushing to a PQ that takes <Zombie*>!
-	//TODO: Implement
 	_active_queue.push(zombie);
 }
 
@@ -104,14 +111,14 @@ void Game::shootZombies() {
 	}
 }
 
-void Game::setGameInfo() {
-	std::getline(std::cin, _junk);
-		
-	std::cin >> _junk >> _quiver_capacity;
-	std::cin >> _junk >> _rand_seed;
-	std::cin >> _junk >> _max_rand_dist; //order is distance, speed, health
-	std::cin >> _junk >> _max_rand_speed;
-	std::cin >> _junk >> _max_rand_health;
+void Game::deleteZombies() { //deletes all zombie ptrs, which are all stored in _master_deque! Also clears any containers w/ Zombie*.
+	for (Zombie* zombie: _master_deque) { //since other containers are only subsets of _master_deque, only have to call delete on _master_deque.
+		delete zombie;
+	}
+	_master_deque.clear();
+	std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator>().swap(_active_queue);
+	_inactive_deque.clear();
+	//TODO: Clear any inactive lists here.	
 }
 
 bool Game::areZombiesActive() const { return !_active_queue.empty(); }

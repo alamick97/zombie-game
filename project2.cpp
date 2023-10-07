@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "P2random.h"
+#include "Median.h"
 #include <iostream>
 
 struct Round {
@@ -18,14 +19,13 @@ void printCreated (std::string name, uint32_t dist, uint32_t speed, uint32_t hea
 }
 
 int main (int argc, char** argv) {
-	// Speeds up project's I/O
-	std::ios_base::sync_with_stdio(false);
+	std::ios_base::sync_with_stdio(false); // Speeds up project's I/O
 
 	Game game(argc, argv); //creates game object on the stack
 	game.setGameInfo(); //unit tested. gets quiv. cap., rand seed, max rands. 
 
-	P2random randZombGenerator;
-	randZombGenerator.initialize(game.getRandSeed(), game.getMaxDist(), game.getMaxSpeed(), game.getMaxHealth()); 
+	P2random randZombGenerator; //declares rand zomb gen
+	randZombGenerator.initialize(game.getRandSeed(), game.getMaxDist(), game.getMaxSpeed(), game.getMaxHealth()); //inits rand zomb gen
 
 	std::string junk;
 	uint32_t current_round = 0;
@@ -64,10 +64,10 @@ int main (int argc, char** argv) {
 				zDist = randZombGenerator.getNextZombieDistance();
 				zSpeed = randZombGenerator.getNextZombieSpeed();
 				zHealth = randZombGenerator.getNextZombieHealth();
-				Zombie randZombie(zName, zDist, zSpeed, zHealth);
+				Zombie* randZombie = new Zombie(zName, zDist, zSpeed, zHealth);
 				//TODO: push to appropriate zombie list(s)
 				game.pushToMasterList(randZombie);//push to master list. This must be done in order of creation. 
-				game.pushToActiveList(&randZombie);//push to active list 
+				game.pushToActiveList(randZombie);//push to active list 
 				if (game.isVerboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); } //TODO: Make sure this is correctly implemented.
 			}
 
@@ -77,21 +77,19 @@ int main (int argc, char** argv) {
 				std::cin >> junk >> zSpeed;
 				std::cin >> junk >> zHealth;
 
-				Zombie namedZombie(zName, zDist, zSpeed, zHealth); //initialize named zombie w/ zombie constructor
+				Zombie* namedZombie = new Zombie(zName, zDist, zSpeed, zHealth); //initialize named zombie w/ zombie constructor
 				//TODO: push to appropriate zombie list(s)
 				game.pushToMasterList(namedZombie);//push to master list. This must be done in order of creation. 
-				game.pushToActiveList(&namedZombie);//push to active list 
+				game.pushToActiveList(namedZombie);//push to active list 
 				if (game.isVerboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); } //TODO: Make sure this is correctly implemented.
 			}
-
-			//TODO: DESTROY ZOMBIES HERE 
-			//STEP 6: Shoot zombies
-			game.shootZombies();
-
-			//TODO: print median here
-			//print median stuff here
 		}
+		//TODO: DESTROY ZOMBIES HERE 
+		//STEP 6: Shoot zombies
+		game.shootZombies();
 
+		//TODO: print median here (after each round)
+	}
 
 		//print victory/defeat output
 		if (game.isPlayerDead()) {
@@ -101,6 +99,17 @@ int main (int argc, char** argv) {
 			std::cout << "VICTORY IN ROUND " << current_round << "! ";
 			std::cout << "{name of zombie} was the last zombie.\n";
 		}
+
+		if (game.isMedianOn()) {
+			std::cout << "At the end of round ..., median life is ...\n"; //for median. TODO: Implement/finish
+		}
+
+		//when done w/ using all Zombie ptrs, delete them!! (prevent memory leaks!). deleteZombies() also clears all containers 
+			//of Zombie*, freeing memory and preventing dangling ptrs..
+		game.deleteZombies(); //deletes all Zombie ptrs created on the heap during the while loop! Must be done to prevent mem leaks!
+
+
+		//====================================================================
 
 		//IF NEW ZOMBIES GENERATED (CURR_ROUND == NEXT_ROUND):
 		//read in new zombies (if apploiabel)
@@ -139,11 +148,6 @@ int main (int argc, char** argv) {
 		*/
 		//(STEP 5 (additional, paoletti description)): "check round with next round", current round is incremented with each while loop.
 
-
-		if (game.isMedianOn()) {
-			std::cout << "At the end of round ..., median life is ...\n"; //for median. TODO: Implement/finish
-		}
-	}
 	//NOTE: can implement everything w/o statistics and median, just do that afterwords (only implement w/ verbose, helps debugging)
 
 	return 0;

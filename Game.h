@@ -37,7 +37,7 @@ private:
     //OutputMode _output_mode; //to remove
     //WARNING: Because of the way deque manages dynamic memory, make sure to use DEQUE for the Zombie objects, and NOT vector. 
     //          1) Master zombie list! -> Deque?
-    std::deque<Zombie> _master_deque; //deque bc it's dynamic & doesn't reallocate memory addresses (it uses "chunks")
+    std::deque<Zombie*> _master_deque; //deque bc it's dynamic & doesn't reallocate memory addresses (it uses "chunks")
     //          2) Active list! (Alive) -> PQ?
     std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> _active_queue; 
     //          3) Inactive List (Dead) (no need for Inactive list)
@@ -58,13 +58,14 @@ public:
     void setGameInfo(); //TODO: Implement
     void refillQuiver();
     void moveZombies();//NOTE: This also increments "rounds active" for each active zombie. Should move ea. active Zombie for the round, even if you die.
-    void pushToMasterList(Zombie zombie);
-    void pushToActiveList(Zombie* zombiePtr);
+    void pushToMasterList(Zombie* zombie);
+    void pushToActiveList(Zombie* zombie);
     void shootZombies(); //uses quiver_load
-    bool areZombiesActive() const; //returns true if active_list is empty
+    void deleteZombies(); //deletes all Zombie ptrs that were created on the heap! Remember to do this!
     void printOutput();//prints output according to input option flags. //TODO: Implement
     void setPlayerIsDeadFlag(); //sets flag to true. To be used when player dies (any zombie has dist=0 after moving.)
     bool isPlayerDead() const; //returns if _player_is_dead_flag is set to true or false. 
+    bool areZombiesActive() const; //returns true if active_list is empty
     uint32_t getRandSeed() const;
     uint32_t getMaxDist() const; //ORDER SHOULD ALWAYS BE: Dist, Speed, Health
     uint32_t getMaxSpeed() const;
