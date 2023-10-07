@@ -73,12 +73,13 @@ void Game::moveZombies() { //moves each active zombie by subtracting speed from 
 
 //TODO: Make sure these parameter/arg types are correct! (ptr vs object)
 void Game::pushToMasterList(Zombie zombie) { //note: we are pushing to a STL deque that takes <Zombie>!
-	_master_deque.push_front(zombie);	
+	_master_deque.push_front(zombie); //hence, the master list has zombies ordered chronologically by order of creation (front to back).`
 }
 
 //TODO: Make sure these parameter/arg types are correct! (ptr vs object)
-void Game::pushToActiveList() { //note: we are pushing to a PQ that takes <Zombie*>!
+void Game::pushToActiveList(Zombie* zombie) { //note: we are pushing to a PQ that takes <Zombie*>!
 	//TODO: Implement
+	_active_queue.push(zombie);
 }
 
 void Game::shootZombies() { 

@@ -49,7 +49,7 @@ int main (int argc, char** argv) {
 			std::getline(std::cin, junk);	//removes "---" line
 			std::cin >> junk >> round.next_round;
 		}
-		//STEP 5: New zombies appear
+		//STEP 5: New zombies appear (Create zombies!)
 		if (round.next_round == current_round) {
 			std::cin >> junk >> round.num_rand_zombies;
 			std::cin >> junk >> round.num_named_zombies;
@@ -66,8 +66,8 @@ int main (int argc, char** argv) {
 				zHealth = randZombGenerator.getNextZombieHealth();
 				Zombie randZombie(zName, zDist, zSpeed, zHealth);
 				//TODO: push to appropriate zombie list(s)
-				game.pushToMasterList(randZombie);//push to master list
-				game.pushToActiveList(randZombie);//push to active list 
+				game.pushToMasterList(randZombie);//push to master list. This must be done in order of creation. 
+				game.pushToActiveList(&randZombie);//push to active list 
 				if (game.isVerboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); } //TODO: Make sure this is correctly implemented.
 			}
 
@@ -79,6 +79,8 @@ int main (int argc, char** argv) {
 
 				Zombie namedZombie(zName, zDist, zSpeed, zHealth); //initialize named zombie w/ zombie constructor
 				//TODO: push to appropriate zombie list(s)
+				game.pushToMasterList(namedZombie);//push to master list. This must be done in order of creation. 
+				game.pushToActiveList(&namedZombie);//push to active list 
 				if (game.isVerboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); } //TODO: Make sure this is correctly implemented.
 			}
 

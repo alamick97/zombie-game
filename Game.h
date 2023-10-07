@@ -57,7 +57,7 @@ public:
     bool isMedianOn() const;
     void setGameInfo(); //TODO: Implement
     void refillQuiver();
-    void moveZombies();//NOTE: This also increments "rounds active" for each active zombie. 
+    void moveZombies();//NOTE: This also increments "rounds active" for each active zombie. Should move ea. active Zombie for the round, even if you die.
     void pushToMasterList(Zombie zombie);
     void pushToActiveList(Zombie* zombiePtr);
     void shootZombies(); //uses quiver_load
