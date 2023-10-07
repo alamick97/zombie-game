@@ -9,7 +9,7 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
     _verbose_flag = false;
     _stats_flag = false;
     _median_flag = false;
-	_youDied_flag = false;
+	_player_is_dead_flag = false;
 
     int opt;
 	int opt_idx;
@@ -46,18 +46,42 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 	}
 }
 
-bool Game::verboseOn() const { return _verbose_flag; }
-bool Game::statsOn() const { return _stats_flag; }
-bool Game::medianOn() const { return _median_flag; }
-bool Game::youDied() const { return _youDied_flag; }
+bool Game::isVerboseOn() const { return _verbose_flag; }
+bool Game::isStatsOn() const { return _stats_flag; }
+bool Game::isMedianOn() const { return _median_flag; }
 void Game::refillQuiver() { _quiver_load = _quiver_capacity; }
+void Game::setPlayerIsDeadFlag() { _player_is_dead_flag = true; }
+bool Game::isPlayerDead() const { return _player_is_dead_flag; }
 uint32_t Game::getRandSeed() const { return _rand_seed; }
 uint32_t Game::getMaxDist() const { return _max_rand_dist; }
 uint32_t Game::getMaxSpeed() const { return _max_rand_speed; }
 uint32_t Game::getMaxHealth() const { return _max_rand_health; }
 
+void Game::moveZombies() { //moves each active zombie by subtracting speed from distance. (for one round)
+	for (auto it = _master_deque.begin(); it != _master_deque.end(); ++it) {
+		//1. check if health 0. if so, skip
+		if (it->getHealth() == 0) { continue; }
+		//2. move zombies:
+		uint32_t newDistance = it->getDistance() - std::min(it->getDistance(), it->getSpeed());
+		it->setDistance(newDistance);
+		//INCREMENT ROUNDS ACTIVE HERE
+		it->incrementRoundsActive();
+		//3. check if dist=0. if so, you're dead.
+		if (it->getDistance() == 0) { _player_is_dead_flag = true; }
+	}
+}
+
+//TODO: Make sure these parameter/arg types are correct! (ptr vs object)
+void Game::pushToMasterList(Zombie zombie) { //note: we are pushing to a STL deque that takes <Zombie>!
+	_master_deque.push_front(zombie);	
+}
+
+//TODO: Make sure these parameter/arg types are correct! (ptr vs object)
+void Game::pushToActiveList() { //note: we are pushing to a PQ that takes <Zombie*>!
+	//TODO: Implement
+}
+
 void Game::shootZombies() { 
-	//TODO: finish implementing
 	//NOTE: Maybe use min(distance,speed), or if (distance < speed) { distance = 0; return distance? }
 	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
 		Zombie* tempZomb = _active_queue.top();//get zombie from active list (PQ)
@@ -70,7 +94,7 @@ void Game::shootZombies() {
 			tempHealth = tempHealth - _quiver_load; //set health accordingly
 		}
 
-		tempZomb->setHealth(tempHealth);//updates heath accordingly
+		tempZomb->setHealth(tempHealth);//updates health accordingly
 
 		if (tempHealth == 0) {
 			_inactive_deque.push_front(_active_queue.top()); //for first/last killed list
@@ -89,4 +113,4 @@ void Game::setGameInfo() {
 	std::cin >> _junk >> _max_rand_health;
 }
 
-bool Game::noZombiesActive() const { return _active_queue.empty(); }
+bool Game::areZombiesActive() const { return !_active_queue.empty(); }

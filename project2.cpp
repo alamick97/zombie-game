@@ -33,17 +33,17 @@ int main (int argc, char** argv) {
 	bool playerIsDead = false;
 	Round round;
 
-	while (!std::cin.fail() && !game.noZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
+	while (!std::cin.fail() && game.areZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
 		//start new round
 		current_round++;
 		//STEP 1: print round
 		std::cout << "Round " << current_round << "\n"; //prints round
 		//STEP 2: refill quiver
 		game.refillQuiver();
-		//STEP 3: move zombies and check if you get killed (distance for any zombie = 0)
-		game.moveZombies(); //TODO: Implement!
+		//STEP 3: move zombies and sets _player_is_dead_flag if you get killed (distance for any zombie = 0)
+		game.moveZombies(); //NOTE: This also increments "rounds active" for each active zombie. 
 		//STEP 4: check if you're dead (distance for any zombie = 0)
-		if (game.youDied()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first. 
+		if (game.isPlayerDead()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first. 
 		
 		if (round.next_round == 0) {
 			std::getline(std::cin, junk);	//removes "---" line
@@ -66,10 +66,12 @@ int main (int argc, char** argv) {
 				zHealth = randZombGenerator.getNextZombieHealth();
 				Zombie randZombie(zName, zDist, zSpeed, zHealth);
 				//TODO: push to appropriate zombie list(s)
-				if (game.verboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); }
+				game.pushToMasterList(randZombie);//push to master list
+				game.pushToActiveList(randZombie);//push to active list 
+				if (game.isVerboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); } //TODO: Make sure this is correctly implemented.
 			}
 
-			for (uint32_t i = 0; i < round.num_named_zombies; ++i) {
+			for (uint32_t i = 0; i < round.num_named_zombies; ++i) { //create named zombies
 				std::cin >> zName;
 				std::cin >> junk >> zDist;
 				std::cin >> junk >> zSpeed;
@@ -77,7 +79,7 @@ int main (int argc, char** argv) {
 
 				Zombie namedZombie(zName, zDist, zSpeed, zHealth); //initialize named zombie w/ zombie constructor
 				//TODO: push to appropriate zombie list(s)
-				if (game.verboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); }
+				if (game.isVerboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); } //TODO: Make sure this is correctly implemented.
 			}
 
 			//TODO: DESTROY ZOMBIES HERE 
@@ -90,7 +92,7 @@ int main (int argc, char** argv) {
 
 
 		//print victory/defeat output
-		if (game.youDied()) {
+		if (game.isPlayerDead()) {
 			std::cout << "DEFEAT IN ROUND " << current_round << "! ";
 			std::cout << "... ate your brains!\n";
 		} else {
@@ -136,7 +138,7 @@ int main (int argc, char** argv) {
 		//(STEP 5 (additional, paoletti description)): "check round with next round", current round is incremented with each while loop.
 
 
-		if (game.medianOn()) {
+		if (game.isMedianOn()) {
 			std::cout << "At the end of round ..., median life is ...\n"; //for median. TODO: Implement/finish
 		}
 	}

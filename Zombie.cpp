@@ -6,8 +6,10 @@ void Zombie::setDistance(uint32_t newDistance) { _distance = newDistance; }
 void Zombie::setHealth(uint32_t newHealth) { _health = newHealth; }
 void Zombie::incrementRoundsActive() { _rounds_active++; }
 
-uint32_t Zombie::getHealth() const { return _health; }
 std::string Zombie::getName() const { return _name; }
+uint32_t Zombie::getDistance() const { return _distance; }
+uint32_t Zombie::getSpeed() const { return _speed; }
+uint32_t Zombie::getHealth() const { return _health; }
 float Zombie::getETA() const { return static_cast<float>(_distance) / _speed; }
 
 struct ZombieComparator {

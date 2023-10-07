@@ -25,6 +25,8 @@ public:
     void incrementRoundsActive();
 
     std::string getName() const;
+    uint32_t getDistance() const;
+    uint32_t getSpeed() const;
     float getETA() const; //for comparator use
     uint32_t getHealth() const;
 };

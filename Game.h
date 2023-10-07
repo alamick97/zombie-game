@@ -19,7 +19,7 @@ private:
     bool _verbose_flag;
     bool _stats_flag;
     bool _median_flag;
-    bool _youDied_flag;
+    bool _player_is_dead_flag;
     uint32_t _stats_arg;
 
     //game info (set from setGameInfo())
@@ -35,7 +35,7 @@ private:
     uint32_t _player_health;
 
     //OutputMode _output_mode; //to remove
-    //TODO: Implement:
+    //WARNING: Because of the way deque manages dynamic memory, make sure to use DEQUE for the Zombie objects, and NOT vector. 
     //          1) Master zombie list! -> Deque?
     std::deque<Zombie> _master_deque; //deque bc it's dynamic & doesn't reallocate memory addresses (it uses "chunks")
     //          2) Active list! (Alive) -> PQ?
@@ -43,28 +43,32 @@ private:
     //          3) Inactive List (Dead) (no need for Inactive list)
     std::deque<Zombie*> _inactive_deque; //making inactive list anyways, even though suboptimal memory. Need to get this done before optimizing. 
                                          //mainly used for first/last killed list. (STATS mode)
+                                            //plan: - When printing first zombies killed, loop & print/pop 
         //make seperate classes for STATS and MEDIAN. STATS should have 2 deques with size of stats input arg int. 
 
     //need 2 other PQ's for Most (1 PQ) & Least (1 PQ) active
+    //TODO: Implement.
     /*when we find that the game has ended, */
 public:
     Game(int argc, char** argv); //default constructor 
-    
     //TODO implement function to setGameInfo (quiver capacity, seed, max rand ___)
-    bool verboseOn() const;
-    bool statsOn() const;
-    bool medianOn() const;
+    bool isVerboseOn() const;
+    bool isStatsOn() const;
+    bool isMedianOn() const;
+    void setGameInfo(); //TODO: Implement
+    void refillQuiver();
+    void moveZombies();//NOTE: This also increments "rounds active" for each active zombie. 
+    void pushToMasterList(Zombie zombie);
+    void pushToActiveList(Zombie* zombiePtr);
+    void shootZombies(); //uses quiver_load
+    bool areZombiesActive() const; //returns true if active_list is empty
+    void printOutput();//prints output according to input option flags. //TODO: Implement
+    void setPlayerIsDeadFlag(); //sets flag to true. To be used when player dies (any zombie has dist=0 after moving.)
+    bool isPlayerDead() const; //returns if _player_is_dead_flag is set to true or false. 
     uint32_t getRandSeed() const;
     uint32_t getMaxDist() const; //ORDER SHOULD ALWAYS BE: Dist, Speed, Health
     uint32_t getMaxSpeed() const;
     uint32_t getMaxHealth() const;
-    void Game::shootZombies(); //uses quiver_load
-    void setGameInfo(); //TODO: Implement
-    void refillQuiver();
-    void moveZombies();
-    bool youDied() const;
-    bool noZombiesActive() const; //returns true if active_list is empty
-    void printOutput();//prints output according to input option flags. //TODO: Implement
 };
 
 
