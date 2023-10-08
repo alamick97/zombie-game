@@ -68,7 +68,7 @@ uint32_t Game::getMaxSpeed() const { return _max_rand_speed; }
 uint32_t Game::getMaxHealth() const { return _max_rand_health; }
 
 void Game::moveZombies() { //moves each active zombie by subtracting speed from distance. (for one round)
-	for (auto it = _master_deque.begin(); it != _master_deque.end(); ++it) {
+	for (auto it = _master_deque.begin(); it != _master_deque.end(); ++it) { //iterates front to back of _master_deque (in order of creation)
 		Zombie* zombie = *it; //dereference iterator (ptr to Zombie ptr) to get zombie ptr (Zombie*)
 		//1. check if health 0. if so, skip
 		if (zombie->getHealth() == 0) { continue; }
@@ -83,7 +83,7 @@ void Game::moveZombies() { //moves each active zombie by subtracting speed from 
 }
 
 void Game::pushToMasterList(Zombie* zombie) { //note: we are pushing to a STL deque that takes <Zombie>!
-	_master_deque.push_front(zombie); //hence, the master list has zombies ordered chronologically by order of creation (front to back).`
+	_master_deque.push_back(zombie); //hence, the master list has zombies ordered chronologically by order of creation (front to back). Hence we push_back.
 }
 
 void Game::pushToActiveList(Zombie* zombie) { //note: we are pushing to a PQ that takes <Zombie*>!

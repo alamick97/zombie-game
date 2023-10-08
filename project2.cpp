@@ -43,7 +43,7 @@ int main (int argc, char** argv) {
 		//STEP 3: move zombies and sets _player_is_dead_flag if you get killed (distance for any zombie = 0)
 		game.moveZombies(); //NOTE: This also increments "rounds active" for each active zombie. 
 		//STEP 4: check if you're dead (distance for any zombie = 0)
-		if (game.isPlayerDead()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first. 
+		if (game.isPlayerDead()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first (it must MOVE before ATTACKING!). 
 		
 		if (round.next_round == 0) {
 			std::getline(std::cin, junk);	//removes "---" line
