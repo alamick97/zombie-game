@@ -70,7 +70,7 @@ uint32_t Game::getMaxHealth() const { return _max_rand_health; }
 void Game::moveZombies() { //moves each active zombie by subtracting speed from distance. (for one round)
 	for (auto it = _master_deque.begin(); it != _master_deque.end(); ++it) { //iterates front to back of _master_deque (in order of creation)
 		Zombie* zombie = *it; //dereference iterator (ptr to Zombie ptr) to get zombie ptr (Zombie*)
-		//1. check if health 0. if so, skip
+		//1. check if health 0. if so, skip. This then gives us only the ACTIVE zombies. No need to worry about dist=0, because once that happens, we die and the loop/game ends.
 		if (zombie->getHealth() == 0) { continue; }
 		//2. move zombies:
 		uint32_t newDistance = zombie->getDistance() - std::min(zombie->getDistance(), zombie->getSpeed());
@@ -79,6 +79,11 @@ void Game::moveZombies() { //moves each active zombie by subtracting speed from 
 		zombie->incrementRoundsActive();
 		//3. check if dist=0. if so, you're dead.
 		if (zombie->getDistance() == 0) { _player_is_dead_flag = true; }
+
+		//TODO: Implement verbose mode stuff here.
+		//print: zombie name, speed, distance, and health, along with 'Moved:'. For example,
+		//Moved: paoletti0 (distance: 0, speed: 20, health: 1)
+		if (_verbose_flag == true) { zombie->printMoved(); }
 	}
 }
 

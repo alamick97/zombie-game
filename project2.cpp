@@ -11,13 +11,6 @@ struct Round {
 	uint32_t num_named_zombies = 0;
 };
 
-void printCreated (std::string name, uint32_t dist, uint32_t speed, uint32_t health) const {
-	std::cout << "Created: " << name;
-	std::cout << " (distance: " << dist;
-	std::cout << ", speed: " << speed;
-	std::cout << ", health: " << health << ")\n";
-}
-
 int main (int argc, char** argv) {
 	std::ios_base::sync_with_stdio(false); // Speeds up project's I/O
 
@@ -33,14 +26,14 @@ int main (int argc, char** argv) {
 	bool playerIsDead = false;
 	Round round;
 
-	while (!std::cin.fail() && game.areZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
+	while (!std::cin.fail() || game.areZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
 		//start new round
 		current_round++;
-		//STEP 1: print round
-		std::cout << "Round " << current_round << "\n"; //prints round
+		//STEP 1: print round (only if verbose flag is enabled)
+		if (game.isVerboseOn()) { std::cout << "Round " << current_round << "\n"; } //prints round 
 		//STEP 2: refill quiver
-		game.refillQuiver();
-		//STEP 3: move zombies and sets _player_is_dead_flag if you get killed (distance for any zombie = 0)
+		game.refillQuiver(); //makes _quiver_load = _quiver_capacity, which was found before while loop.
+		//STEP 3: move all ACTIVE zombies and sets _player_is_dead_flag if you get killed (distance for any zombie = 0)
 		game.moveZombies(); //NOTE: This also increments "rounds active" for each active zombie. 
 		//STEP 4: check if you're dead (distance for any zombie = 0)
 		if (game.isPlayerDead()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first (it must MOVE before ATTACKING!). 
@@ -65,10 +58,11 @@ int main (int argc, char** argv) {
 				zSpeed = randZombGenerator.getNextZombieSpeed();
 				zHealth = randZombGenerator.getNextZombieHealth();
 				Zombie* randZombie = new Zombie(zName, zDist, zSpeed, zHealth);
-				//TODO: push to appropriate zombie list(s)
+				//pushes to appropriate lists
 				game.pushToMasterList(randZombie);//push to master list. This must be done in order of creation. 
 				game.pushToActiveList(randZombie);//push to active list 
-				if (game.isVerboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); } //TODO: Make sure this is correctly implemented.
+				//verbose output
+				if (game.isVerboseOn()) { randZombie->printCreated(); }
 			}
 
 			for (uint32_t i = 0; i < round.num_named_zombies; ++i) { //create named zombies
@@ -78,10 +72,11 @@ int main (int argc, char** argv) {
 				std::cin >> junk >> zHealth;
 
 				Zombie* namedZombie = new Zombie(zName, zDist, zSpeed, zHealth); //initialize named zombie w/ zombie constructor
-				//TODO: push to appropriate zombie list(s)
+				//pushes to appropriate lists
 				game.pushToMasterList(namedZombie);//push to master list. This must be done in order of creation. 
 				game.pushToActiveList(namedZombie);//push to active list 
-				if (game.isVerboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); } //TODO: Make sure this is correctly implemented.
+				//verbose output
+				if (game.isVerboseOn()) { namedZombie->printCreated(); }
 			}
 		}
 		//STEP 6: Shoot zombies
@@ -94,7 +89,7 @@ int main (int argc, char** argv) {
 		if (game.isPlayerDead()) {
 			std::cout << "DEFEAT IN ROUND " << current_round << "! ";
 			std::cout << "... ate your brains!\n";
-		} else {
+		} else { //if player isn't dead, then you mustve won.
 			std::cout << "VICTORY IN ROUND " << current_round << "! ";
 			std::cout << "{name of zombie} was the last zombie.\n";
 		}

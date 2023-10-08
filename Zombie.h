@@ -23,11 +23,14 @@ public:
     void setDistance(uint32_t newDistance);
     void setHealth(uint32_t newHealth);
     void incrementRoundsActive();
+    void printCreated() const;
+    void printMoved() const;
 
     std::string getName() const;
     uint32_t getDistance() const;
     uint32_t getSpeed() const;
-    float getETA() const; //for comparator use
+    //float getETA() const; //for comparator use
+    uint32_t getETA() const;
     uint32_t getHealth() const;
 };
 
