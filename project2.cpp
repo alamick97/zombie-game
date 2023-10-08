@@ -50,7 +50,7 @@ int main (int argc, char** argv) {
 			std::cin >> junk >> round.next_round;
 		}
 		//STEP 5: New zombies appear (Create zombies!)
-		if (round.next_round == current_round) {
+		if (round.next_round == current_round) { //only to be done when curr round reaches specified input round!
 			std::cin >> junk >> round.num_rand_zombies;
 			std::cin >> junk >> round.num_named_zombies;
 
@@ -84,9 +84,8 @@ int main (int argc, char** argv) {
 				if (game.isVerboseOn()) { printCreated(zName, zDist, zSpeed, zHealth); } //TODO: Make sure this is correctly implemented.
 			}
 		}
-		//TODO: DESTROY ZOMBIES HERE 
 		//STEP 6: Shoot zombies
-		game.shootZombies();
+		game.shootZombies(); //shoots zombies, for each round
 
 		//TODO: print median here (after each round)
 	}

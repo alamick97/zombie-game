@@ -69,15 +69,16 @@ uint32_t Game::getMaxHealth() const { return _max_rand_health; }
 
 void Game::moveZombies() { //moves each active zombie by subtracting speed from distance. (for one round)
 	for (auto it = _master_deque.begin(); it != _master_deque.end(); ++it) {
+		Zombie* zombie = *it; //dereference iterator (ptr to Zombie ptr) to get zombie ptr (Zombie*)
 		//1. check if health 0. if so, skip
-		if (it->getHealth() == 0) { continue; }
+		if (zombie->getHealth() == 0) { continue; }
 		//2. move zombies:
-		uint32_t newDistance = it->getDistance() - std::min(it->getDistance(), it->getSpeed());
-		it->setDistance(newDistance);
+		uint32_t newDistance = zombie->getDistance() - std::min(zombie->getDistance(), zombie->getSpeed());
+		zombie->setDistance(newDistance);
 		//INCREMENT ROUNDS ACTIVE HERE
-		it->incrementRoundsActive();
+		zombie->incrementRoundsActive();
 		//3. check if dist=0. if so, you're dead.
-		if (it->getDistance() == 0) { _player_is_dead_flag = true; }
+		if (zombie->getDistance() == 0) { _player_is_dead_flag = true; }
 	}
 }
 
@@ -90,22 +91,14 @@ void Game::pushToActiveList(Zombie* zombie) { //note: we are pushing to a PQ tha
 }
 
 void Game::shootZombies() { 
-	//NOTE: Maybe use min(distance,speed), or if (distance < speed) { distance = 0; return distance? }
 	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
 		Zombie* tempZomb = _active_queue.top();//get zombie from active list (PQ)
-		uint32_t tempHealth = tempZomb->getHealth();
-		//2 Cases: 
-		if (_quiver_load >= tempZomb->getHealth()) { //if quiver load is more than zombie's health
-			_quiver_load = _quiver_load - tempZomb->getHealth(); //adjust quiver load
-			tempHealth = 0; //set health accordingly 
-		} else if (_quiver_load < tempZomb->getHealth()) {
-			tempHealth = tempHealth - _quiver_load; //set health accordingly
-		}
+		uint32_t arrowsShot = std::min(_quiver_load, tempZomb->getHealth());
+		_quiver_capacity -= arrowsShot;
+		tempZomb->setHealth(tempZomb->getHealth() - arrowsShot);
 
-		tempZomb->setHealth(tempHealth);//updates health accordingly
-
-		if (tempHealth == 0) {
-			_inactive_deque.push_front(_active_queue.top()); //for first/last killed list
+		if (tempZomb->getHealth() == 0) {
+			_inactive_deque.push_back(_active_queue.top()); //for first/last killed list
 			_active_queue.pop();//pop zombie
 		}
 	}

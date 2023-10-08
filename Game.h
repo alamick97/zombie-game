@@ -41,7 +41,8 @@ private:
     //          2) Active list! (Alive) -> PQ?
     std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> _active_queue; 
     //          3) Inactive List (Dead) (no need for Inactive list)
-    std::deque<Zombie*> _inactive_deque; //making inactive list anyways, even though suboptimal memory. Need to get this done before optimizing. 
+    std::deque<Zombie*> _inactive_deque; //stores front->back = first-killed->last-killed. Pushes killed zombies to back.
+                        //making inactive list anyways, even though suboptimal memory. Need to get this done before optimizing. 
                                          //mainly used for first/last killed list. (STATS mode)
                                             //plan: - When printing first zombies killed, loop & print/pop 
         //make seperate classes for STATS and MEDIAN. STATS should have 2 deques with size of stats input arg int. 
@@ -71,6 +72,5 @@ public:
     uint32_t getMaxSpeed() const;
     uint32_t getMaxHealth() const;
 };
-
 
 #endif // GAME_H
