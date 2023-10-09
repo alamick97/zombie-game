@@ -71,6 +71,10 @@ public:
     uint32_t getMaxHealth() const;
     //uint32_t getStatsArg() const;
     std::string getNameOfZombieThatKilled() const;
+    //============================================================================
+    //FOR DEBUGGING (START) ==============================================
+    void printMasterDeque() const;
+    //FOR DEBUGGING (END) ================================================
 };
 
 #endif // GAME_H

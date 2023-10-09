@@ -69,8 +69,7 @@ uint32_t Game::getMaxSpeed() const { return _max_rand_speed; }
 uint32_t Game::getMaxHealth() const { return _max_rand_health; }
 
 void Game::moveZombies() { //moves each active zombie by subtracting speed from distance. (for one round)
-	for (auto it = _master_deque.begin(); it != _master_deque.end(); ++it) { //iterates front to back of _master_deque (in order of creation)
-		Zombie* zombie = *it; //dereference iterator (ptr to Zombie ptr) to get zombie ptr (Zombie*)
+	for (Zombie* zombie : _master_deque) {
 		//1. check if health 0. if so, skip. This then gives us only the ACTIVE zombies. No need to worry about dist=0, because once that happens, we die and the loop/game ends.
 		if (zombie->getHealth() == 0) { continue; }
 		//2. move zombies:
@@ -83,8 +82,7 @@ void Game::moveZombies() { //moves each active zombie by subtracting speed from 
 			_player_is_dead_flag = true; 
 			_zombie_that_killed_player = zombie;
 		}
-		//verbose mode for moving zombies
-		if (_verbose_flag == true) { zombie->printMoved(); }
+		if (_verbose_flag == true) { zombie->printMoved(); } //move zombie verbose message
 	}
 }
 
@@ -98,13 +96,13 @@ void Game::pushToActiveList(Zombie* zombie) { //note: we are pushing to a PQ tha
 
 void Game::shootZombies() { 
 	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
-		Zombie* tempZomb = _active_queue.top();//get zombie from active list (PQ)
-		uint32_t arrowsShot = std::min(_quiver_load, tempZomb->getHealth());
-		_quiver_capacity -= arrowsShot;
-		tempZomb->setHealth(tempZomb->getHealth() - arrowsShot);
+		Zombie* zombie = _active_queue.top();//get zombie from active list (PQ)
+		uint32_t arrowsShot = std::min(_quiver_load, zombie->getHealth());
+		_quiver_load -= arrowsShot;
+		zombie->setHealth(zombie->getHealth() - arrowsShot);
 
-		if (tempZomb->getHealth() == 0) {
-			if (isVerboseOn()) { tempZomb->printDestroyed(); }
+		if (zombie->getHealth() == 0) {
+			if (isVerboseOn()) { zombie->printDestroyed(); }
 			_inactive_deque.push_back(_active_queue.top()); //for first/last killed list
 			_active_queue.pop();//pop zombie
 		}
@@ -126,3 +124,13 @@ void Game::deleteZombies() { //deletes all zombie ptrs, which are all stored in 
 }
 
 bool Game::areZombiesActive() const { return !_active_queue.empty(); }
+
+
+//============================================================================
+//FOR DEBUGGING (START)
+void Game::printMasterDeque() const {
+	for (Zombie* zombie : _master_deque) {
+		std::cout << "zombie health: " << zombie->getHealth() << "\n";	
+	}
+}
+//FOR DEBUGGING (END)

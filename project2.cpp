@@ -28,7 +28,8 @@ int main (int argc, char** argv) {
 	Round round;
 
 	//NOTE: There is always at least one round! (input constraint)
-	while (!std::cin.fail() || game.areZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
+	while (!std::cin.fail()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
+	//while (!std::cin.fail() || game.areZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
 		//start new round
 		current_round++;
 		//STEP 1: print round (only if verbose flag is enabled)
@@ -41,9 +42,11 @@ int main (int argc, char** argv) {
 		if (game.isPlayerDead()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first (it must MOVE before ATTACKING!). 
 		
 		if (round.next_round == 0) { 
+			std::getline(std::cin, junk);	//removes trailing whitespace
 			std::getline(std::cin, junk);	//removes "---" line
 			std::cin >> junk >> round.next_round; //gets next round info from input file!
 		}
+		//if (current_round == 6) { exit(0); } //STOPPOINT FOR DEBUGGING!
 		//STEP 5: New zombies appear (Create zombies!)
 		if (round.next_round == current_round) { //only to be done when curr round reaches specified input round!
 			std::cin >> junk >> round.num_rand_zombies;
@@ -59,6 +62,7 @@ int main (int argc, char** argv) {
 				zDist = randZombGenerator.getNextZombieDistance();
 				zSpeed = randZombGenerator.getNextZombieSpeed();
 				zHealth = randZombGenerator.getNextZombieHealth();
+
 				Zombie* randZombie = new Zombie(zName, zDist, zSpeed, zHealth);
 				//pushes to appropriate lists
 				game.pushToMasterList(randZombie);//push to master list. This must be done in order of creation. 
@@ -80,6 +84,10 @@ int main (int argc, char** argv) {
 				//verbose output
 				if (game.isVerboseOn()) { namedZombie->printCreated(); }
 			}
+			round.next_round = 0; //resets next round
+			//FOR DEBUGGING (START) ===================================================
+			//game.printMasterDeque(); //for debugging health! (move zombie issue, getting stuck on health=0)
+			//FOR DEBUGGING (END) =====================================================
 		}
 		//STEP 6: Shoot zombies
 		game.shootZombies(); //shoots zombies, for each round
@@ -89,6 +97,7 @@ int main (int argc, char** argv) {
 		if (game.isMedianOn()) { //NOTE: Median is for all zombies destroyed thus far in game.
 			std::cout << "At the end of round " << current_round << ", median life is " << "{median goes here!}" << "\n"; //TODO: Implement/finish
 		}
+
 	}
 
 	//print victory/defeat output
