@@ -46,7 +46,6 @@ int main (int argc, char** argv) {
 			std::getline(std::cin, junk);	//removes "---" line
 			std::cin >> junk >> round.next_round; //gets next round info from input file!
 		}
-		//if (current_round == 6) { exit(0); } //STOPPOINT FOR DEBUGGING!
 		//STEP 5: New zombies appear (Create zombies!)
 		if (round.next_round == current_round) { //only to be done when curr round reaches specified input round!
 			std::cin >> junk >> round.num_rand_zombies;
