@@ -2,7 +2,6 @@
 
 //STRATEGY: work on this after getting main project & verbose working
 //USE CASE: This class is only meant to be used with destroyed zombies! (works regardless, but not intended use case.)
-
 #ifndef MEDIAN_H
 #define MEDIAN_H
 
