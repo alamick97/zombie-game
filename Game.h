@@ -33,6 +33,7 @@ private:
     //player info
     uint32_t _quiver_load;
     uint32_t _player_health;
+    Zombie* _zombie_that_killed_player;
 
     //OutputMode _output_mode; //to remove
     //WARNING: Because of the way deque manages dynamic memory, make sure to use DEQUE for the Zombie objects, and NOT vector. 
@@ -47,9 +48,9 @@ private:
                                             //plan: - When printing first zombies killed, loop & print/pop 
         //make seperate classes for STATS and MEDIAN. STATS should have 2 deques with size of stats input arg int. 
 
-    //need 2 other PQ's for Most (1 PQ) & Least (1 PQ) active
     //TODO: Implement.
-    /*when we find that the game has ended, */
+    std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> _most_active_zombies;
+    std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> _least_active_zombies;
 public:
     Game(int argc, char** argv); //default constructor 
     //TODO implement function to setGameInfo (quiver capacity, seed, max rand ___)
@@ -71,6 +72,7 @@ public:
     uint32_t getMaxDist() const; //ORDER SHOULD ALWAYS BE: Dist, Speed, Health
     uint32_t getMaxSpeed() const;
     uint32_t getMaxHealth() const;
+    std::string getNameOfZombieThatKilled() const;
 };
 
 #endif // GAME_H

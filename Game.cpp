@@ -78,11 +78,11 @@ void Game::moveZombies() { //moves each active zombie by subtracting speed from 
 		//INCREMENT ROUNDS ACTIVE HERE
 		zombie->incrementRoundsActive();
 		//3. check if dist=0. if so, you're dead.
-		if (zombie->getDistance() == 0) { _player_is_dead_flag = true; }
-
-		//TODO: Implement verbose mode stuff here.
-		//print: zombie name, speed, distance, and health, along with 'Moved:'. For example,
-		//Moved: paoletti0 (distance: 0, speed: 20, health: 1)
+		if (zombie->getDistance() == 0 && _player_is_dead_flag == false) { 
+			_player_is_dead_flag = true; 
+			_zombie_that_killed_player = zombie;
+		}
+		//verbose mode for moving zombies
 		if (_verbose_flag == true) { zombie->printMoved(); }
 	}
 }
@@ -107,6 +107,10 @@ void Game::shootZombies() {
 			_active_queue.pop();//pop zombie
 		}
 	}
+}
+
+std::string Game::getNameOfZombieThatKilled() const {
+	return _zombie_that_killed_player->getName();	
 }
 
 void Game::deleteZombies() { //deletes all zombie ptrs, which are all stored in _master_deque! Also clears any containers w/ Zombie*.

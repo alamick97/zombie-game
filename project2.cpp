@@ -82,25 +82,34 @@ int main (int argc, char** argv) {
 		//STEP 6: Shoot zombies
 		game.shootZombies(); //shoots zombies, for each round
 
-		//TODO: print median here (after each round)
+		//FINAL STEP (in loop): Print median! (total for all destroyed zombies in game)
+		//TODO: Finish Median implementation!
+		if (game.isMedianOn()) { //NOTE: Median is for all zombies destroyed thus far in game.
+			std::cout << "At the end of round " << current_round << ", median life is " << "{median goes here!}" << "\n"; //TODO: Implement/finish
+		}
 	}
 
-		//print victory/defeat output
-		if (game.isPlayerDead()) {
-			std::cout << "DEFEAT IN ROUND " << current_round << "! ";
-			std::cout << "... ate your brains!\n";
-		} else { //if player isn't dead, then you mustve won.
-			std::cout << "VICTORY IN ROUND " << current_round << "! ";
-			std::cout << "{name of zombie} was the last zombie.\n";
-		}
+	//print victory/defeat output
+	if (game.isPlayerDead()) {
+		std::cout << "DEFEAT IN ROUND " << current_round << "! ";
+		std::cout << game.getNameOfZombieThatKilled() << " ate your brains!\n";
+	} else { //if player isn't dead, then you mustve won.
+		std::cout << "VICTORY IN ROUND " << current_round << "! ";
+		std::cout << "{name of zombie} was the last zombie.\n";
+	}
 
-		if (game.isMedianOn()) {
-			std::cout << "At the end of round ..., median life is ...\n"; //for median. TODO: Implement/finish
-		}
+	//TODO: Use stats.cpp/.h here. Todo after 
+	/*Needs:
+	-First n Zombies Killed (inactive list, by order)
+	-Last n Zombies Killed
+	-n Most active Zombies (_rounds_active) 
+	-n Least active Zombies (_rounds_active) 
+	*/
 
-		//when done w/ using all Zombie ptrs, delete them!! (prevent memory leaks!). deleteZombies() also clears all containers 
-			//of Zombie*, freeing memory and preventing dangling ptrs..
-		game.deleteZombies(); //deletes all Zombie ptrs created on the heap during the while loop! Must be done to prevent mem leaks!
+	//AT THE VERY END OF THE PROGRAM, WHEN NO ZOMBIES/CONTAINERS NEEDED ANYMORE.
+	//when done w/ using all Zombie ptrs, delete them!! (prevent memory leaks!). deleteZombies() also clears all containers 
+		//of Zombie*, freeing memory and preventing dangling ptrs..
+	game.deleteZombies(); //deletes all Zombie ptrs created on the heap during the while loop! Must be done to prevent mem leaks!
 
 
 		//====================================================================
