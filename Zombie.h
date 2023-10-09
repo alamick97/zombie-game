@@ -39,15 +39,17 @@ struct ZombieComparator {
     bool operator()(const Zombie* z1, const Zombie* z2) {
         uint32_t eta1 = z1->getETA();
         uint32_t eta2 = z2->getETA();
-        if (eta1 < eta2) { return true; } //first, compare ETAs
-        else if (eta1 > eta2) { return false; }
+        if (eta1 != eta2) { return eta1 > eta2; }
+        //if (eta1 > eta2) { return true; } //first, compare ETAs
+        //else if (eta1 < eta2) { return false; } //this is probably wrong. we dont return false, we go to the next criteria.
 
         uint32_t health1 = z1->getHealth();
         uint32_t health2 = z2->getHealth();
-        if (health1 < health2) { return true; } //second, compare health
-        else if (health1 > health2) { return false; }
+        if (health1 != health2) { return health1 > health2; }
+        //if (health1 > health2) { return true; } //second, compare health
+        //else if (health1 < health2) { return false; } //this is probably also wrong. we dont return false, we go to the next criteria.
 
-        return z1->getName() < z2->getName(); //thirdly and lastly, compare names lexicographically
+        return z1->getName() > z2->getName(); //thirdly and lastly, compare names lexicographically
     }
 };
 

@@ -33,7 +33,7 @@ int main (int argc, char** argv) {
 		//start new round
 		current_round++;
 		//STEP 1: print round (only if verbose flag is enabled)
-		if (game.isVerboseOn()) { std::cout << "Round " << current_round << "\n"; } //prints round 
+		if (game.isVerboseOn()) { std::cout << "Round: " << current_round << "\n"; } //prints round 
 		//STEP 2: refill quiver
 		game.refillQuiver(); //makes _quiver_load = _quiver_capacity, which was found before while loop.
 		//STEP 3: move all ACTIVE zombies and sets _player_is_dead_flag if you get killed (distance for any zombie = 0)
@@ -85,19 +85,14 @@ int main (int argc, char** argv) {
 				if (game.isVerboseOn()) { namedZombie->printCreated(); }
 			}
 			round.next_round = 0; //resets next round
-			//FOR DEBUGGING (START) ===================================================
-			//game.printMasterDeque(); //for debugging health! (move zombie issue, getting stuck on health=0)
-			//FOR DEBUGGING (END) =====================================================
 		}
 		//STEP 6: Shoot zombies
 		game.shootZombies(); //shoots zombies, for each round
-
 		//FINAL STEP (in loop): Print median! (total for all destroyed zombies in game)
 		//TODO: Finish Median implementation!
 		if (game.isMedianOn()) { //NOTE: Median is for all zombies destroyed thus far in game.
-			std::cout << "At the end of round " << current_round << ", median life is " << "{median goes here!}" << "\n"; //TODO: Implement/finish
+			std::cout << "At the end of round " << current_round << ", the median zombie lifetime is " << "{median goes here!}" << "\n"; //TODO: Implement/finish
 		}
-
 	}
 
 	//print victory/defeat output

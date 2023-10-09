@@ -32,7 +32,6 @@ private:
 
     //player info
     uint32_t _quiver_load;
-    uint32_t _player_health;
     Zombie* _zombie_that_killed_player;
 
     //OutputMode _output_mode; //to remove

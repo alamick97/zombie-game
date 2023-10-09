@@ -97,9 +97,10 @@ void Game::pushToActiveList(Zombie* zombie) { //note: we are pushing to a PQ tha
 void Game::shootZombies() { 
 	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
 		Zombie* zombie = _active_queue.top();//get zombie from active list (PQ)
-		uint32_t arrowsShot = std::min(_quiver_load, zombie->getHealth());
-		_quiver_load -= arrowsShot;
-		zombie->setHealth(zombie->getHealth() - arrowsShot);
+		uint32_t dmg = std::min(_quiver_load, zombie->getHealth());
+		_quiver_load -= dmg;
+		uint32_t newHealth = zombie->getHealth() - dmg;
+		zombie->setHealth(newHealth);
 
 		if (zombie->getHealth() == 0) {
 			if (isVerboseOn()) { zombie->printDestroyed(); }
