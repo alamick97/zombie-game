@@ -30,14 +30,36 @@ public:
     std::string getName() const;
     uint32_t getDistance() const;
     uint32_t getSpeed() const;
-    //float getETA() const; //for comparator use
     uint32_t getETA() const;
     uint32_t getHealth() const;
     uint32_t getRoundsActive() const;
 };
 
-struct ZombieComparator;
-struct MostActiveComparator;
-struct LeastActiveComparator;
+struct ZombieComparator {
+    bool operator()(const Zombie* z1, const Zombie* z2) {
+        uint32_t eta1 = z1->getETA();
+        uint32_t eta2 = z2->getETA();
+        if (eta1 < eta2) { return true; } //first, compare ETAs
+        else if (eta1 > eta2) { return false; }
+
+        uint32_t health1 = z1->getHealth();
+        uint32_t health2 = z2->getHealth();
+        if (health1 < health2) { return true; } //second, compare health
+        else if (health1 > health2) { return false; }
+
+        return z1->getName() < z2->getName(); //thirdly and lastly, compare names lexicographically
+    }
+};
+
+struct MostActiveComparator { //for stats, N most active zombies
+    bool operator()(const Zombie* z1, const Zombie* z2) const {
+        return z1->getRoundsActive() < z2->getRoundsActive();
+    }
+};
+struct LeastActiveComparator { //for stats, N least active zombies
+    bool operator()(const Zombie* z1, const Zombie* z2) const {
+        return z1->getRoundsActive() > z2->getRoundsActive();
+    }
+};
 
 #endif //ZOMBIE_H

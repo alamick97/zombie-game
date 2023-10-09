@@ -4,7 +4,7 @@
 //USE CASE: This class is only meant to be used with destroyed zombies! (works regardless, but not intended use case.)
 
 #ifndef MEDIAN_H
-#define MEDIAH_H
+#define MEDIAN_H
 
 #include <queue>
 #include <vector>
@@ -15,6 +15,6 @@ class Median {
 public:
     void insertNumber(uint32_t num);
     uint32_t findMedian(); //returns median
-}
+};
 
 #endif //MEDIAN_H
