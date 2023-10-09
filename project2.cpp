@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "P2random.h"
 #include "Median.h"
+#include "Stats.h"
 #include <iostream>
 
 struct Round {
@@ -26,6 +27,7 @@ int main (int argc, char** argv) {
 	bool playerIsDead = false;
 	Round round;
 
+	//NOTE: There is always at least one round! (input constraint)
 	while (!std::cin.fail() || game.areZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
 		//start new round
 		current_round++;
@@ -38,9 +40,9 @@ int main (int argc, char** argv) {
 		//STEP 4: check if you're dead (distance for any zombie = 0)
 		if (game.isPlayerDead()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first (it must MOVE before ATTACKING!). 
 		
-		if (round.next_round == 0) {
+		if (round.next_round == 0) { 
 			std::getline(std::cin, junk);	//removes "---" line
-			std::cin >> junk >> round.next_round;
+			std::cin >> junk >> round.next_round; //gets next round info from input file!
 		}
 		//STEP 5: New zombies appear (Create zombies!)
 		if (round.next_round == current_round) { //only to be done when curr round reaches specified input round!
@@ -52,7 +54,7 @@ int main (int argc, char** argv) {
 			uint32_t zSpeed;
 			uint32_t zHealth;
 
-			for (uint32_t i = 0; i < round.num_rand_zombies; ++i) { //create rand zombies
+			for (uint32_t i = 0; i < round.num_rand_zombies; ++i) { //create rand zombies based on info given
 				zName = randZombGenerator.getNextZombieName();
 				zDist = randZombGenerator.getNextZombieDistance();
 				zSpeed = randZombGenerator.getNextZombieSpeed();
@@ -65,7 +67,7 @@ int main (int argc, char** argv) {
 				if (game.isVerboseOn()) { randZombie->printCreated(); }
 			}
 
-			for (uint32_t i = 0; i < round.num_named_zombies; ++i) { //create named zombies
+			for (uint32_t i = 0; i < round.num_named_zombies; ++i) { //create named zombies based on info given
 				std::cin >> zName;
 				std::cin >> junk >> zDist;
 				std::cin >> junk >> zSpeed;
@@ -105,6 +107,7 @@ int main (int argc, char** argv) {
 	-n Most active Zombies (_rounds_active) 
 	-n Least active Zombies (_rounds_active) 
 	*/
+
 
 	//AT THE VERY END OF THE PROGRAM, WHEN NO ZOMBIES/CONTAINERS NEEDED ANYMORE.
 	//when done w/ using all Zombie ptrs, delete them!! (prevent memory leaks!). deleteZombies() also clears all containers 

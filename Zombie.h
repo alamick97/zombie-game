@@ -25,6 +25,7 @@ public:
     void incrementRoundsActive();
     void printCreated() const;
     void printMoved() const;
+    void printDestroyed() const;
 
     std::string getName() const;
     uint32_t getDistance() const;
@@ -32,8 +33,11 @@ public:
     //float getETA() const; //for comparator use
     uint32_t getETA() const;
     uint32_t getHealth() const;
+    uint32_t getRoundsActive() const;
 };
 
 struct ZombieComparator;
+struct MostActiveComparator;
+struct LeastActiveComparator;
 
 #endif //ZOMBIE_H

@@ -48,9 +48,6 @@ private:
                                             //plan: - When printing first zombies killed, loop & print/pop 
         //make seperate classes for STATS and MEDIAN. STATS should have 2 deques with size of stats input arg int. 
 
-    //TODO: Implement.
-    std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> _most_active_zombies;
-    std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> _least_active_zombies;
 public:
     Game(int argc, char** argv); //default constructor 
     //TODO implement function to setGameInfo (quiver capacity, seed, max rand ___)
@@ -72,6 +69,7 @@ public:
     uint32_t getMaxDist() const; //ORDER SHOULD ALWAYS BE: Dist, Speed, Health
     uint32_t getMaxSpeed() const;
     uint32_t getMaxHealth() const;
+    //uint32_t getStatsArg() const;
     std::string getNameOfZombieThatKilled() const;
 };
 

@@ -62,6 +62,7 @@ bool Game::isMedianOn() const { return _median_flag; }
 void Game::refillQuiver() { _quiver_load = _quiver_capacity; }
 void Game::setPlayerIsDeadFlag() { _player_is_dead_flag = true; }
 bool Game::isPlayerDead() const { return _player_is_dead_flag; }
+//uint32_t Game::getStatsArg() const { return _stats_arg; }
 uint32_t Game::getRandSeed() const { return _rand_seed; }
 uint32_t Game::getMaxDist() const { return _max_rand_dist; }
 uint32_t Game::getMaxSpeed() const { return _max_rand_speed; }
@@ -103,6 +104,7 @@ void Game::shootZombies() {
 		tempZomb->setHealth(tempZomb->getHealth() - arrowsShot);
 
 		if (tempZomb->getHealth() == 0) {
+			if (isVerboseOn()) { tempZomb->printDestroyed(); }
 			_inactive_deque.push_back(_active_queue.top()); //for first/last killed list
 			_active_queue.pop();//pop zombie
 		}

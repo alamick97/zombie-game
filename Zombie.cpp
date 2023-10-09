@@ -5,6 +5,7 @@
 void Zombie::setDistance(uint32_t newDistance) { _distance = newDistance; }
 void Zombie::setHealth(uint32_t newHealth) { _health = newHealth; }
 void Zombie::incrementRoundsActive() { _rounds_active++; }
+
 void Zombie::printCreated () const {
 	std::cout << "Created: " << _name;
 	std::cout << " (distance: " << _distance;
@@ -18,12 +19,20 @@ void Zombie::printMoved() const {
 	std::cout << ", health: " << _health << ")\n";
 }
 
+void Zombie::printDestroyed() const {
+	std::cout << "Destroyed: " << _name;
+	std::cout << " (distance: " << _distance;
+	std::cout << ", speed: " << _speed;
+	std::cout << ", health: " << _health << ")\n";
+}
+
 std::string Zombie::getName() const { return _name; }
 uint32_t Zombie::getDistance() const { return _distance; }
 uint32_t Zombie::getSpeed() const { return _speed; }
 uint32_t Zombie::getHealth() const { return _health; }
 //float Zombie::getETA() const { return static_cast<float>(_distance) / _speed; }
 uint32_t Zombie::getETA() const { return _distance / _speed; }
+uint32_t Zombie::getRoundsActive() const { return _rounds_active; }
 
 struct ZombieComparator {
     bool operator()(const Zombie* z1, const Zombie* z2) {
@@ -40,5 +49,16 @@ struct ZombieComparator {
         else if (health1 > health2) { return false; }
 
         return z1->getName() < z2->getName(); //thirdly and lastly, compare names lexicographically
+    }
+};
+
+struct MostActiveComparator { //for stats, N most active zombies
+    bool operator()(const Zombie* z1, const Zombie* z2) const {
+        return z1->getRoundsActive() < z2->getRoundsActive();
+    }
+};
+struct LeastActiveComparator { //for stats, N least active zombies
+    bool operator()(const Zombie* z1, const Zombie* z2) const {
+        return z1->getRoundsActive() > z2->getRoundsActive();
     }
 };
