@@ -114,6 +114,10 @@ std::string Game::getNameOfZombieThatKilled() const {
 	return _zombie_that_killed_player->getName();	
 }
 
+std::string Game::getNameOfLastZombie() const {
+	return _inactive_deque.back()->getName(); 
+}
+
 void Game::deleteZombies() { //deletes all zombie ptrs, which are all stored in _master_deque! Also clears any containers w/ Zombie*.
 	for (Zombie* zombie: _master_deque) { //since other containers are only subsets of _master_deque, only have to call delete on _master_deque.
 		delete zombie;

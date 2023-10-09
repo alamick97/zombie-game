@@ -28,8 +28,7 @@ int main (int argc, char** argv) {
 	Round round;
 
 	//NOTE: There is always at least one round! (input constraint)
-	while (!std::cin.fail()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
-	//while (!std::cin.fail() || game.areZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
+	while (!std::cin.fail() || game.areZombiesActive()) { //Zombie Manipulation Order: MOVE->CREATE->DESTROY
 		//start new round
 		current_round++;
 		//STEP 1: print round (only if verbose flag is enabled)
@@ -92,6 +91,14 @@ int main (int argc, char** argv) {
 		if (game.isMedianOn()) { //NOTE: Median is for all zombies destroyed thus far in game.
 			std::cout << "At the end of round " << current_round << ", the median zombie lifetime is " << "{median goes here!}" << "\n"; //TODO: Implement/finish
 		}
+		//DEBUGGING START!==============================================================================
+		/*
+		if (current_round == 11) {
+			std::cout << "cin fails?: " << std::cin.fail() << "\n";
+			std::cout << "are zombies active?" << game.areZombiesActive() << "\n";
+		}
+		*/
+		//DEBUGGING END!==============================================================================
 	}
 
 	//print victory/defeat output
@@ -100,7 +107,7 @@ int main (int argc, char** argv) {
 		std::cout << game.getNameOfZombieThatKilled() << " ate your brains!\n";
 	} else { //if player isn't dead, then you mustve won.
 		std::cout << "VICTORY IN ROUND " << current_round << "! ";
-		std::cout << "{name of zombie} was the last zombie.\n";
+		std::cout << game.getNameOfLastZombie() << " was the last zombie.\n";
 	}
 
 	//TODO: Use stats.cpp/.h here. Todo after 
