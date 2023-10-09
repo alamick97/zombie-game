@@ -1,4 +1,4 @@
-Round 1
+Round: 1
 Created: paoletti0 (distance: 26, speed: 52, health: 1)
 Created: darden1 (distance: 16, speed: 57, health: 1)
 Created: garcia2 (distance: 33, speed: 46, health: 1)
@@ -38,7 +38,7 @@ Destroyed: noah16 (distance: 28, speed: 37, health: 0)
 Destroyed: paoletti0 (distance: 26, speed: 52, health: 0)
 Destroyed: paoletti18 (distance: 21, speed: 42, health: 0)
 At the end of round 1, the median zombie lifetime is {median goes here!}
-Round 2
+Round: 2
 Moved: cris3 (distance: 26, speed: 4, health: 1)
 Moved: will5 (distance: 6, speed: 37, health: 1)
 Moved: fee6 (distance: 0, speed: 43, health: 1)
