@@ -107,17 +107,19 @@ int main (int argc, char** argv) {
 
 	//TODO: Use stats.cpp/.h here. Todo after 
 	//STATISTICS OUTPUT:
+	if (game.isStatsOn()) {
 	//Needs:
 	//-Num zombies still active
 	std::cout << "Zombies still active: " << game.getNumZombiesStillActive() << "\n";
 	//-First n Zombies Killed (inactive list, by order)
-	stats.printFirstZombiesKilled();
+	stats.printFirstZombiesKilled(game.getInactiveZombies());
 	//-Last n Zombies Killed
-	stats.printLastZombiesKilled();
+	stats.printLastZombiesKilled(game.getInactiveZombies());
 	//-n Most active Zombies (_rounds_active) 
-	stats.printMostActiveZombies(); //wait, am I confusing stats & median behavior??? Need to check (after meal).
+	//stats.printMostActiveZombies(); //TODO: Implement!
 	//-n Least active Zombies (_rounds_active) 
-	stats.printLeastActiveZombies(); //wait, am I confusing stats & median behavior??? Need to check (after meal).
+	//stats.printLeastActiveZombies(); //TODO: Implement!
+	}
 
 	//AT THE VERY END OF THE PROGRAM, WHEN NO ZOMBIES/CONTAINERS NEEDED ANYMORE.
 	//when done w/ using all Zombie ptrs, delete them!! (prevent memory leaks!). deleteZombies() also clears all containers 

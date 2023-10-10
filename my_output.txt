@@ -58,3 +58,26 @@ Moved: MarkSchlissel (distance: 0, speed: 300, health: 15)
 Moved: MarySueColeman (distance: 0, speed: 3, health: 6)
 Moved: LeeBollinger (distance: 99, speed: 1, health: 100)
 DEFEAT IN ROUND 2! potatobot8 ate your brains!
+Zombies still active: 18
+First zombies killed:
+bing13 1
+bing22 2
+bing4 3
+cris21 4
+cris3 5
+darden1 6
+darden19 7
+garcia2 8
+garcia20 9
+paoletti18 10
+Last zombies killed:
+paoletti18 10
+garcia20 9
+garcia2 8
+darden19 7
+darden1 6
+cris3 5
+cris21 4
+bing4 3
+bing22 2
+bing13 1

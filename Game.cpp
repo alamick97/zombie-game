@@ -69,6 +69,16 @@ uint32_t Game::getMaxHealth() const { return _max_rand_health; }
 uint32_t Game::getStatsArg() const { return _stats_arg; }
 uint32_t Game::getNumZombiesStillActive() const { return _active_queue.size(); }
 
+std::string Game::getNameOfZombieThatKilled() const {
+	return _zombie_that_killed_player->getName();	
+}
+
+std::string Game::getNameOfLastZombie() const {
+	return _inactive_deque.back()->getName(); 
+}
+
+const std::deque<Zombie*>& Game::getInactiveZombies() const { return _inactive_deque; }
+
 void Game::moveZombies() { //moves each active zombie by subtracting speed from distance. (for one round)
 	for (Zombie* zombie : _master_deque) {
 		//1. check if health 0. if so, skip. This then gives us only the ACTIVE zombies. No need to worry about dist=0, because once that happens, we die and the loop/game ends.
@@ -128,14 +138,6 @@ void Game::shootZombies(Median* median) {  //for use if median enabled
 			_active_queue.pop();//pop zombie
 		}
 	}
-}
-
-std::string Game::getNameOfZombieThatKilled() const {
-	return _zombie_that_killed_player->getName();	
-}
-
-std::string Game::getNameOfLastZombie() const {
-	return _inactive_deque.back()->getName(); 
 }
 
 void Game::deleteZombies() { //deletes all zombie ptrs, which are all stored in _master_deque! Also clears any containers w/ Zombie*.

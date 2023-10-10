@@ -9,11 +9,13 @@ void Stats::setStatsArg(uint32_t statsArg) {
 }
 
 void Stats::updateMostLeastActive(Zombie* zombie) {
-	if (_most_active_zombies.size() < _stats_arg || zombie->getRoundsActive() >= _most_active_zombies.top()->getRoundsActive()) {
+	if (_most_active_zombies.size() < _stats_arg || 
+		zombie->getRoundsActive() >= _most_active_zombies.top()->getRoundsActive()) {
 		_most_active_zombies.push(zombie);
         if (_most_active_zombies.size()) { _most_active_zombies.pop(); }
 	}	
-	if (_least_active_zombies.size() < _stats_arg || zombie->getRoundsActive() <= _least_active_zombies.top()->getRoundsActive()) {
+	if (_least_active_zombies.size() < _stats_arg || 
+		zombie->getRoundsActive() <= _least_active_zombies.top()->getRoundsActive()) {
         _least_active_zombies.push(zombie);
         if (_least_active_zombies.size()) { _least_active_zombies.pop(); }
 	}
@@ -27,6 +29,7 @@ void Stats::printFirstZombiesKilled(const std::deque<Zombie*>& inactiveZombies) 
 	auto it = inactiveZombies.begin();
 	for (uint32_t i = 1; i < (N + 1); ++i) { //from 1 to N+1 so that it counts from 1 (for output req.)
 		std::cout << (*it)->getName() << " " << i << "\n";	
+		++it;
 	}
 }
 
@@ -38,6 +41,7 @@ void Stats::printLastZombiesKilled(const std::deque<Zombie*>& inactiveZombies) c
 	auto it = inactiveZombies.rbegin();
 	for (uint32_t i = 0; i < N; ++i) { //from 1 to N+1 so that it counts from 1 (for output req.)
 		std::cout << (*it)->getName() << " " << (N-i) << "\n";	
+		++it;
 	}
 }
 
