@@ -26,7 +26,7 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 			case 'v':
                 _verbose_flag = true;   
 				break;
-			case 's':
+			case 's': {
                 _stats_flag = true;
 				unsigned long val = std::stoul(optarg);
 				if (val <= std::numeric_limits<uint32_t>::max()) {
@@ -37,6 +37,7 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 				}
                 //_stats_arg = std::stoul(optarg); //this caused AG to throw warning as error (for data loss incase input type exceeded uint32_t value.)
 				break;
+			}
 			case 'm':
                 _median_flag = true;
 				break;
