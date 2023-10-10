@@ -91,7 +91,7 @@ int main (int argc, char** argv) {
 			round.next_round = 0; //resets next round
 		}
 		//STEP 6: Shoot zombies
-		game.shootZombies(&median, &stats);
+		game.shootZombies(&median); 
 		//FINAL STEP (in loop): Print median! (total for all destroyed zombies in game)
 		//TODO: Finish Median implementation!
 		if (game.isMedianOn()) { //NOTE: Median is for all zombies destroyed thus far in game.
@@ -119,12 +119,15 @@ int main (int argc, char** argv) {
 		//-Last n Zombies Killed
 		stats.printLastZombiesKilled(game.getInactiveZombies());
 
+		/*
 		//update the most/least active list with active zombies
     	std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> activeZombies = game.getActiveZombies();
 		while (!activeZombies.empty()) {
 			stats.updateMostLeastActive(activeZombies.top());
 			activeZombies.pop();
 		}
+		*/
+		stats.determineMostLeastActive(game.getAllZombies());
 		//-n Most active Zombies (_rounds_active) 
 		stats.printMostActiveZombies();
 		//-n Least active Zombies (_rounds_active) 

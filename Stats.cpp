@@ -41,7 +41,7 @@ void Stats::printMostLeastActive(const std::deque<Zombie*>& masterDeque) {
 }
 */
 
-// POSSIBLE UNWORKING OVERLY-COMPLEX METHODS
+/* THIS IS WRONG.
 void Stats::updateMostLeastActive(Zombie* zombie) {
 	if (_most_active_zombies.size() < _stats_arg || 
 		zombie->getRoundsActive() >= _most_active_zombies.top()->getRoundsActive()) {
@@ -52,6 +52,15 @@ void Stats::updateMostLeastActive(Zombie* zombie) {
 		zombie->getRoundsActive() <= _least_active_zombies.top()->getRoundsActive()) {
         _least_active_zombies.push(zombie);
         if (_least_active_zombies.size() > _stats_arg) { _least_active_zombies.pop(); }
+	}
+}
+*/
+
+void Stats::determineMostLeastActive(const std::deque<Zombie*> masterDeque) {
+	//use updateMostLeastActive!
+	for (Zombie* zombie : masterDeque) {
+		_most_active_zombies.push(zombie);
+		_least_active_zombies.push(zombie);
 	}
 }
 

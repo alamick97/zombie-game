@@ -62,8 +62,7 @@ public:
     void pushToMasterList(Zombie* zombie);
     void pushToActiveList(Zombie* zombie);
     //void shootZombies(); //uses quiver_load
-    //void shootZombies(Median* median);
-    void shootZombies(Median* median, Stats* stats);
+    void shootZombies(Median* median);
     void deleteZombies(); //deletes all Zombie ptrs that were created on the heap! Remember to do this!
     void printOutput();//prints output according to input option flags. //TODO: Implement
     void setPlayerIsDeadFlag(); //sets flag to true. To be used when player dies (any zombie has dist=0 after moving.)

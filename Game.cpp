@@ -138,7 +138,7 @@ void Game::shootZombies() { //for use if median not enabled
 }
 */
 
-void Game::shootZombies(Median* median, Stats* stats) {  //for use if median enabled
+void Game::shootZombies(Median* median) {  //for use if median enabled
 	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
 		Zombie* zombie = _active_queue.top();//get zombie from active list (PQ)
 		uint32_t dmg = std::min(_quiver_load, zombie->getHealth());
@@ -149,7 +149,6 @@ void Game::shootZombies(Median* median, Stats* stats) {  //for use if median ena
 		if (zombie->getHealth() == 0) {
 			if (isVerboseOn()) { zombie->printDestroyed(); } //prints zombies destroyed, when destroyed, if verbose enabled!
 			if (isMedianOn()) { median->insertNumber(zombie->getRoundsActive()); } //if median enabled, adds dead zombie to median calc!
-			if (_stats_flag == true) { stats->updateMostLeastActive(zombie); } //upates most/least active when zombie dies.
 			_inactive_deque.push_back(_active_queue.top()); //for first/last killed list
 			_active_queue.pop();//pop zombie
 		}
