@@ -26,8 +26,9 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 			case 'v':
                 _verbose_flag = true;   
 				break;
-			case 's': {
+			case 's':
                 _stats_flag = true;
+				/*
 				unsigned long val = std::stoul(optarg);
 				if (val <= std::numeric_limits<uint32_t>::max()) {
 					_stats_arg = static_cast<uint32_t>(val);
@@ -35,9 +36,9 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 					std::cerr << "Input exceeds max value for uint32_t datatype.\n"; 
 					exit(1); 
 				}
-                //_stats_arg = std::stoul(optarg); //this caused AG to throw warning as error (for data loss incase input type exceeded uint32_t value.)
+				*/
+                _stats_arg = std::stoul(optarg); //this caused AG to throw warning as error (for data loss incase input type exceeded uint32_t value.)
 				break;
-			}
 			case 'm':
                 _median_flag = true;
 				break;
@@ -74,7 +75,7 @@ uint32_t Game::getRandSeed() const { return _rand_seed; }
 uint32_t Game::getMaxDist() const { return _max_rand_dist; }
 uint32_t Game::getMaxSpeed() const { return _max_rand_speed; }
 uint32_t Game::getMaxHealth() const { return _max_rand_health; }
-uint32_t Game::getStatsArg() const { return _stats_arg; }
+size_t Game::getStatsArg() const { return _stats_arg; }
 size_t Game::getNumZombiesStillActive() const { return _active_queue.size(); } //size_t instead of uint32_t to avoid AG warning-errors.
 
 std::string Game::getNameOfZombieThatKilled() const {
@@ -87,7 +88,7 @@ std::string Game::getNameOfLastZombie() const {
 
 const std::deque<Zombie*>& Game::getInactiveZombies() const { return _inactive_deque; }
 
-void Game::moveZombies() { //moves each active zombie by subtracting speed from distance. (for one round)
+void Game::moveZombies(Stats& stats) { //moves each active zombie by subtracting speed from distance. (for one round)
 	for (Zombie* zombie : _master_deque) {
 		//1. check if health 0. if so, skip. This then gives us only the ACTIVE zombies. No need to worry about dist=0, because once that happens, we die and the loop/game ends.
 		if (zombie->getHealth() == 0) { continue; }
@@ -102,6 +103,7 @@ void Game::moveZombies() { //moves each active zombie by subtracting speed from 
 			_zombie_that_killed_player = zombie;
 		}
 		if (_verbose_flag == true) { zombie->printMoved(); } //move zombie verbose message
+		if (_stats_flag == true) { stats.updateMostLeastActive(zombie); } //updates stats most/leave active, since the _rounds_active var has changed.
 	}
 }
 

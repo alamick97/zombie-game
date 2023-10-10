@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <queue>
 #include <vector>
+
 class Median {
     std::priority_queue<uint32_t> leftHeap; //max heap
     std::priority_queue<uint32_t, std::vector<uint32_t>, std::greater<uint32_t>> rightHeap; //min heap

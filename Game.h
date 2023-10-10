@@ -5,6 +5,7 @@
 
 #include "Zombie.h"
 #include "Median.h"
+#include "Stats.h"
 
 #include <cstdint>
 #include <iostream>
@@ -22,7 +23,7 @@ private:
     bool _stats_flag;
     bool _median_flag;
     bool _player_is_dead_flag;
-    uint32_t _stats_arg;
+    size_t _stats_arg; //size_t (instd. of uint32_t) for AG wError. 
 
     //game info (set from setGameInfo())
     std::string _junk;
@@ -57,7 +58,7 @@ public:
     bool isMedianOn() const;
     void setGameInfo(); //TODO: Implement
     void refillQuiver();
-    void moveZombies();//NOTE: This also increments "rounds active" for each active zombie. Should move ea. active Zombie for the round, even if you die.
+    void moveZombies(Stats& stats);//NOTE: This also increments "rounds active" for each active zombie. Should move ea. active Zombie for the round, even if you die.
     void pushToMasterList(Zombie* zombie);
     void pushToActiveList(Zombie* zombie);
     //void shootZombies(); //uses quiver_load
@@ -71,7 +72,7 @@ public:
     uint32_t getMaxDist() const; //ORDER SHOULD ALWAYS BE: Dist, Speed, Health
     uint32_t getMaxSpeed() const;
     uint32_t getMaxHealth() const;
-    uint32_t getStatsArg() const;
+    size_t getStatsArg() const;
     size_t getNumZombiesStillActive() const;
     const std::deque<Zombie*>& getInactiveZombies() const;
     std::string getNameOfZombieThatKilled() const;

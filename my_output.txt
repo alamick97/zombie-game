@@ -82,4 +82,24 @@ bing4 3
 bing22 2
 bing13 1
 Most active zombies:
+MarkSchlissel 2
+LeeBollinger 2
+MarkSchlissel 2
+LeeBollinger 2
+MarySueColeman 2
+MarySueColeman 2
+fee6 2
+will5 2
+bing4 1
+garcia2 1
 Least active zombies:
+bing4 1
+garcia2 1
+fee24 2
+MarkSchlissel 2
+LeeBollinger 2
+potatobot8 2
+fee6 2
+MarySueColeman 2
+paoletti9 2
+will5 2

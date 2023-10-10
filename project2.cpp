@@ -40,8 +40,7 @@ int main (int argc, char** argv) {
 		//STEP 2: refill quiver
 		game.refillQuiver(); //makes _quiver_load = _quiver_capacity, which was found before while loop.
 		//STEP 3: move all ACTIVE zombies and sets _player_is_dead_flag if you get killed (distance for any zombie = 0)
-		game.moveZombies(); //NOTE: This also increments "rounds active" for each active zombie. 
-		//TODO: call stats.updateMostLeastActive() for all zombies moved!)
+		game.moveZombies(stats); //NOTE: This also increments "rounds active" for each active zombie. Also updates stats most/least active after moving (since this changes who is most/least active.) 
 		//STEP 4: check if you're dead (distance for any zombie = 0)
 		if (game.isPlayerDead()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first (it must MOVE before ATTACKING!). 
 		

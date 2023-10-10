@@ -4,12 +4,13 @@
 
 #include "Stats.h"
 
-void Stats::setStatsArg(uint32_t statsArg) {
+void Stats::setStatsArg(size_t statsArg) {
 	_stats_arg = statsArg;	
 }
 
 void Stats::printFirstZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const {
-	uint32_t N = std::min(_stats_arg, static_cast<uint32_t>(inactiveZombies.size()));
+	//uint32_t N = std::min(_stats_arg, static_cast<uint32_t>(inactiveZombies.size()));
+	size_t N = std::min(_stats_arg, inactiveZombies.size()); //size_t for AG
 
 	std::cout << "First zombies killed:\n";
 
@@ -21,7 +22,8 @@ void Stats::printFirstZombiesKilled(const std::deque<Zombie*>& inactiveZombies) 
 }
 
 void Stats::printLastZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const {
-	uint32_t N = std::min(_stats_arg, static_cast<uint32_t>(inactiveZombies.size()));
+	//uint32_t N = std::min(_stats_arg, static_cast<uint32_t>(inactiveZombies.size()));
+	size_t N = std::min(_stats_arg, inactiveZombies.size()); //size_t for AG
 
 	std::cout << "Last zombies killed:\n";
 
@@ -36,18 +38,18 @@ void Stats::updateMostLeastActive(Zombie* zombie) {
 	if (_most_active_zombies.size() < _stats_arg || 
 		zombie->getRoundsActive() >= _most_active_zombies.top()->getRoundsActive()) {
 		_most_active_zombies.push(zombie);
-        if (_most_active_zombies.size()) { _most_active_zombies.pop(); }
+        if (_most_active_zombies.size() > _stats_arg) { _most_active_zombies.pop(); }
 	}	
 	if (_least_active_zombies.size() < _stats_arg || 
 		zombie->getRoundsActive() <= _least_active_zombies.top()->getRoundsActive()) {
         _least_active_zombies.push(zombie);
-        if (_least_active_zombies.size()) { _least_active_zombies.pop(); }
+        if (_least_active_zombies.size() > _stats_arg) { _least_active_zombies.pop(); }
 	}
 }
 
 void Stats::printMostActiveZombies() { //original way to call most/least active, destroys queues
 	std::cout << "Most active zombies:\n";
-	uint32_t count = 0;
+	size_t count = 0;
 	while (!_most_active_zombies.empty() && count < _stats_arg) {
 		std::cout << _most_active_zombies.top()->getName() << " " << _most_active_zombies.top()->getRoundsActive() << "\n";
 		_most_active_zombies.pop();
@@ -57,7 +59,7 @@ void Stats::printMostActiveZombies() { //original way to call most/least active,
 
 void Stats::printLeastActiveZombies() { //original way to call most/least active, destroys queues
 	std::cout << "Least active zombies:\n";
-	uint32_t count = 0;
+	size_t count = 0;
 	while (!_least_active_zombies.empty() && count < _stats_arg) {
 		std::cout << _least_active_zombies.top()->getName() << " " << _least_active_zombies.top()->getRoundsActive() << "\n";
 		_least_active_zombies.pop();
