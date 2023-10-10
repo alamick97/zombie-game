@@ -72,7 +72,7 @@ public:
     uint32_t getMaxSpeed() const;
     uint32_t getMaxHealth() const;
     uint32_t getStatsArg() const;
-    uint32_t getNumZombiesStillActive() const;
+    size_t getNumZombiesStillActive() const;
     const std::deque<Zombie*>& getInactiveZombies() const;
     std::string getNameOfZombieThatKilled() const;
     std::string getNameOfLastZombie() const;

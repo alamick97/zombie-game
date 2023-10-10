@@ -75,7 +75,7 @@ uint32_t Game::getMaxDist() const { return _max_rand_dist; }
 uint32_t Game::getMaxSpeed() const { return _max_rand_speed; }
 uint32_t Game::getMaxHealth() const { return _max_rand_health; }
 uint32_t Game::getStatsArg() const { return _stats_arg; }
-uint32_t Game::getNumZombiesStillActive() const { return _active_queue.size(); }
+size_t Game::getNumZombiesStillActive() const { return _active_queue.size(); } //size_t instead of uint32_t to avoid AG warning-errors.
 
 std::string Game::getNameOfZombieThatKilled() const {
 	return _zombie_that_killed_player->getName();	
