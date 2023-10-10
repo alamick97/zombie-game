@@ -20,6 +20,8 @@ int main (int argc, char** argv) {
 
 	P2random randZombGenerator; //declares rand zomb gen
 	randZombGenerator.initialize(game.getRandSeed(), game.getMaxDist(), game.getMaxSpeed(), game.getMaxHealth()); //inits rand zomb gen
+	Median median; //for median info. not used if not enabled.
+	Stats stats; //for stats info. not used if not enabled.
 
 	std::string junk;
 	uint32_t current_round = 0;
@@ -85,20 +87,12 @@ int main (int argc, char** argv) {
 			round.next_round = 0; //resets next round
 		}
 		//STEP 6: Shoot zombies
-		game.shootZombies(); //shoots zombies, for each round
+		game.shootZombies(&median);
 		//FINAL STEP (in loop): Print median! (total for all destroyed zombies in game)
 		//TODO: Finish Median implementation!
 		if (game.isMedianOn()) { //NOTE: Median is for all zombies destroyed thus far in game.
-			std::cout << "At the end of round " << current_round << ", the median zombie lifetime is " << "{median goes here!}" << "\n"; //TODO: Implement/finish
+			std::cout << "At the end of round " << current_round << ", the median zombie lifetime is " << median.getMedian() << "\n"; //TODO: Implement/finish
 		}
-		//DEBUGGING START!==============================================================================
-		/*
-		if (current_round == 11) {
-			std::cout << "cin fails?: " << std::cin.fail() << "\n";
-			std::cout << "are zombies active?" << game.areZombiesActive() << "\n";
-		}
-		*/
-		//DEBUGGING END!==============================================================================
 	}
 
 	//print victory/defeat output
@@ -111,22 +105,25 @@ int main (int argc, char** argv) {
 	}
 
 	//TODO: Use stats.cpp/.h here. Todo after 
-	/*Needs:
-	-First n Zombies Killed (inactive list, by order)
-	-Last n Zombies Killed
-	-n Most active Zombies (_rounds_active) 
-	-n Least active Zombies (_rounds_active) 
-	*/
-
+	//Needs:
+	//-First n Zombies Killed (inactive list, by order)
+	stats.printFirstZombiesKilled();
+	//-Last n Zombies Killed
+	stats.printLastZombiesKilled();
+	//-n Most active Zombies (_rounds_active) 
+	stats.printMostActiveZombies(); //wait, am I confusing stats & median behavior??? Need to check (after meal).
+	//-n Least active Zombies (_rounds_active) 
+	stats.printLeastActiveZombies(); //wait, am I confusing stats & median behavior??? Need to check (after meal).
 
 	//AT THE VERY END OF THE PROGRAM, WHEN NO ZOMBIES/CONTAINERS NEEDED ANYMORE.
 	//when done w/ using all Zombie ptrs, delete them!! (prevent memory leaks!). deleteZombies() also clears all containers 
 		//of Zombie*, freeing memory and preventing dangling ptrs..
 	game.deleteZombies(); //deletes all Zombie ptrs created on the heap during the while loop! Must be done to prevent mem leaks!
 
+	return 0;
+}
 
-		//====================================================================
-
+//=========================ORIGINAL PROFFICE NOTES END HERE===============================================================
 		//IF NEW ZOMBIES GENERATED (CURR_ROUND == NEXT_ROUND):
 		//read in new zombies (if apploiabel)
 			//create zombie from cin info
@@ -166,5 +163,4 @@ int main (int argc, char** argv) {
 
 	//NOTE: can implement everything w/o statistics and median, just do that afterwords (only implement w/ verbose, helps debugging)
 
-	return 0;
-}
+//=========================ORIGINAL PROFFICE/OFFICE NOTES END HERE===============================================================

@@ -12,8 +12,8 @@ class Median {
     std::priority_queue<uint32_t, std::vector<uint32_t>, std::greater<uint32_t>> rightHeap; //min heap
 
 public:
-    void insertNumber(uint32_t num);
-    uint32_t findMedian(); //returns median
+    void insertNumber(uint32_t num); //should insert only when zombies die!
+    uint32_t getMedian(); //gets/returns median
 };
 
 #endif //MEDIAN_H

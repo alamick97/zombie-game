@@ -37,7 +37,7 @@ Destroyed: darden19 (distance: 27, speed: 49, health: 0)
 Destroyed: garcia2 (distance: 15, speed: 57, health: 0)
 Destroyed: garcia20 (distance: 26, speed: 52, health: 0)
 Destroyed: paoletti18 (distance: 3, speed: 53, health: 0)
-At the end of round 1, the median zombie lifetime is {median goes here!}
+At the end of round 1, the median zombie lifetime is 1
 Round: 2
 Moved: paoletti0 (distance: 5, speed: 20, health: 1)
 Moved: will5 (distance: 11, speed: 6, health: 1)

@@ -94,7 +94,8 @@ void Game::pushToActiveList(Zombie* zombie) { //note: we are pushing to a PQ tha
 	_active_queue.push(zombie);
 }
 
-void Game::shootZombies() { 
+/*
+void Game::shootZombies() { //for use if median not enabled
 	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
 		Zombie* zombie = _active_queue.top();//get zombie from active list (PQ)
 		uint32_t dmg = std::min(_quiver_load, zombie->getHealth());
@@ -104,6 +105,24 @@ void Game::shootZombies() {
 
 		if (zombie->getHealth() == 0) {
 			if (isVerboseOn()) { zombie->printDestroyed(); }
+			_inactive_deque.push_back(_active_queue.top()); //for first/last killed list
+			_active_queue.pop();//pop zombie
+		}
+	}
+}
+*/
+
+void Game::shootZombies(Median* median) {  //for use if median enabled
+	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
+		Zombie* zombie = _active_queue.top();//get zombie from active list (PQ)
+		uint32_t dmg = std::min(_quiver_load, zombie->getHealth());
+		_quiver_load -= dmg;
+		uint32_t newHealth = zombie->getHealth() - dmg;
+		zombie->setHealth(newHealth);
+
+		if (zombie->getHealth() == 0) {
+			if (isVerboseOn()) { zombie->printDestroyed(); } //prints zombies destroyed, when destroyed, if verbose enabled!
+			if (isMedianOn()) { median->insertNumber(zombie->getRoundsActive()); } //if median enabled, adds dead zombie to median calc!
 			_inactive_deque.push_back(_active_queue.top()); //for first/last killed list
 			_active_queue.pop();//pop zombie
 		}

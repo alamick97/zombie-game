@@ -16,7 +16,7 @@ void Median::insertNumber(uint32_t num) {
     }
 }
 
-uint32_t Median::findMedian() {
+uint32_t Median::getMedian() { //determines/gets/returns median
     if (leftHeap.size() > rightHeap.size()) { return leftHeap.top(); } //this will be the median, if total size is odd
     else { return (leftHeap.top() + rightHeap.top()) / 2; } //this will be the median, if total size is even
 }
