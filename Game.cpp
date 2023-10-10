@@ -62,11 +62,12 @@ bool Game::isMedianOn() const { return _median_flag; }
 void Game::refillQuiver() { _quiver_load = _quiver_capacity; }
 void Game::setPlayerIsDeadFlag() { _player_is_dead_flag = true; }
 bool Game::isPlayerDead() const { return _player_is_dead_flag; }
-//uint32_t Game::getStatsArg() const { return _stats_arg; }
 uint32_t Game::getRandSeed() const { return _rand_seed; }
 uint32_t Game::getMaxDist() const { return _max_rand_dist; }
 uint32_t Game::getMaxSpeed() const { return _max_rand_speed; }
 uint32_t Game::getMaxHealth() const { return _max_rand_health; }
+uint32_t Game::getStatsArg() const { return _stats_arg; }
+uint32_t Game::getNumZombiesStillActive() const { return _active_queue.size(); }
 
 void Game::moveZombies() { //moves each active zombie by subtracting speed from distance. (for one round)
 	for (Zombie* zombie : _master_deque) {

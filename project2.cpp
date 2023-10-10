@@ -15,13 +15,14 @@ struct Round {
 int main (int argc, char** argv) {
 	std::ios_base::sync_with_stdio(false); // Speeds up project's I/O
 
+	Median median; //for median info. not used if not enabled.
+	Stats stats; //for stats info. not used if not enabled.
 	Game game(argc, argv); //creates game object on the stack
 	game.setGameInfo(); //unit tested. gets quiv. cap., rand seed, max rands. 
+	if (game.isStatsOn()) { stats.setStatsArg(game.getStatsArg()); }
 
 	P2random randZombGenerator; //declares rand zomb gen
 	randZombGenerator.initialize(game.getRandSeed(), game.getMaxDist(), game.getMaxSpeed(), game.getMaxHealth()); //inits rand zomb gen
-	Median median; //for median info. not used if not enabled.
-	Stats stats; //for stats info. not used if not enabled.
 
 	std::string junk;
 	uint32_t current_round = 0;
@@ -105,7 +106,10 @@ int main (int argc, char** argv) {
 	}
 
 	//TODO: Use stats.cpp/.h here. Todo after 
+	//STATISTICS OUTPUT:
 	//Needs:
+	//-Num zombies still active
+	std::cout << "Zombies still active: " << game.getNumZombiesStillActive() << "\n";
 	//-First n Zombies Killed (inactive list, by order)
 	stats.printFirstZombiesKilled();
 	//-Last n Zombies Killed

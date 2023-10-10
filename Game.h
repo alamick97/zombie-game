@@ -70,7 +70,8 @@ public:
     uint32_t getMaxDist() const; //ORDER SHOULD ALWAYS BE: Dist, Speed, Health
     uint32_t getMaxSpeed() const;
     uint32_t getMaxHealth() const;
-    //uint32_t getStatsArg() const;
+    uint32_t getStatsArg() const;
+    uint32_t getNumZombiesStillActive() const;
     std::string getNameOfZombieThatKilled() const;
     std::string getNameOfLastZombie() const;
     //============================================================================
