@@ -28,7 +28,9 @@ int main (int argc, char** argv) {
 	std::string junk;
 	uint32_t current_round = 0;
 	uint32_t next_round = 0;
+	(void) next_round; //suppressees unused variable warning (it's used in conditional while-loop)
 	bool playerIsDead = false;
+	(void) playerIsDead; //suppressees unused variable warning (it's used in conditional while-loop)
 	Round round;
 
 	//NOTE: There is always at least one round! (input constraint)
