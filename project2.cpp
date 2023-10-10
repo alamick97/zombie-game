@@ -108,17 +108,17 @@ int main (int argc, char** argv) {
 	//TODO: Use stats.cpp/.h here. Todo after 
 	//STATISTICS OUTPUT:
 	if (game.isStatsOn()) {
-	//Needs:
-	//-Num zombies still active
-	std::cout << "Zombies still active: " << game.getNumZombiesStillActive() << "\n";
-	//-First n Zombies Killed (inactive list, by order)
-	stats.printFirstZombiesKilled(game.getInactiveZombies());
-	//-Last n Zombies Killed
-	stats.printLastZombiesKilled(game.getInactiveZombies());
-	//-n Most active Zombies (_rounds_active) 
-	//stats.printMostActiveZombies(); //TODO: Implement!
-	//-n Least active Zombies (_rounds_active) 
-	//stats.printLeastActiveZombies(); //TODO: Implement!
+		//Needs:
+		//-Num zombies still active
+		std::cout << "Zombies still active: " << game.getNumZombiesStillActive() << "\n";
+		//-First n Zombies Killed (inactive list, by order)
+		stats.printFirstZombiesKilled(game.getInactiveZombies());
+		//-Last n Zombies Killed
+		stats.printLastZombiesKilled(game.getInactiveZombies());
+		//-n Most active Zombies (_rounds_active) 
+		stats.printMostActiveZombies();
+		//-n Least active Zombies (_rounds_active) 
+		stats.printLeastActiveZombies();
 	}
 
 	//AT THE VERY END OF THE PROGRAM, WHEN NO ZOMBIES/CONTAINERS NEEDED ANYMORE.

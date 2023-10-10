@@ -15,8 +15,8 @@ class Stats {
 public:
     void setStatsArg(uint32_t statsArg);
     void updateMostLeastActive(Zombie* zombie); 
-	void printFirstZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const; //TODO: Implement
-	void printLastZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const; //TODO: Implement
-	void printMostActiveZombies() const; //TODO: Implement
-	void printLeastActiveZombies() const; //TODO: Implement
+	void printFirstZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const;
+	void printLastZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const;
+	void printMostActiveZombies();
+	void printLeastActiveZombies();
 };
