@@ -78,6 +78,10 @@ uint32_t Game::getMaxHealth() const { return _max_rand_health; }
 size_t Game::getStatsArg() const { return _stats_arg; }
 size_t Game::getNumZombiesStillActive() const { return _active_queue.size(); } //size_t instead of uint32_t to avoid AG warning-errors.
 
+std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> Game::getActiveZombies() {
+	return _active_queue; 
+}
+
 std::string Game::getNameOfZombieThatKilled() const {
 	return _zombie_that_killed_player->getName();	
 }
@@ -87,8 +91,10 @@ std::string Game::getNameOfLastZombie() const {
 }
 
 const std::deque<Zombie*>& Game::getInactiveZombies() const { return _inactive_deque; }
+    
+const std::deque<Zombie*>& Game::getAllZombies() { return _master_deque; } //for stats most/least active output use.
 
-void Game::moveZombies(Stats& stats) { //moves each active zombie by subtracting speed from distance. (for one round)
+void Game::moveZombies() { //moves each active zombie by subtracting speed from distance. (for one round)
 	for (Zombie* zombie : _master_deque) {
 		//1. check if health 0. if so, skip. This then gives us only the ACTIVE zombies. No need to worry about dist=0, because once that happens, we die and the loop/game ends.
 		if (zombie->getHealth() == 0) { continue; }
@@ -103,7 +109,6 @@ void Game::moveZombies(Stats& stats) { //moves each active zombie by subtracting
 			_zombie_that_killed_player = zombie;
 		}
 		if (_verbose_flag == true) { zombie->printMoved(); } //move zombie verbose message
-		if (_stats_flag == true) { stats.updateMostLeastActive(zombie); } //updates stats most/leave active, since the _rounds_active var has changed.
 	}
 }
 
@@ -133,7 +138,7 @@ void Game::shootZombies() { //for use if median not enabled
 }
 */
 
-void Game::shootZombies(Median* median) {  //for use if median enabled
+void Game::shootZombies(Median* median, Stats* stats) {  //for use if median enabled
 	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
 		Zombie* zombie = _active_queue.top();//get zombie from active list (PQ)
 		uint32_t dmg = std::min(_quiver_load, zombie->getHealth());
@@ -144,6 +149,7 @@ void Game::shootZombies(Median* median) {  //for use if median enabled
 		if (zombie->getHealth() == 0) {
 			if (isVerboseOn()) { zombie->printDestroyed(); } //prints zombies destroyed, when destroyed, if verbose enabled!
 			if (isMedianOn()) { median->insertNumber(zombie->getRoundsActive()); } //if median enabled, adds dead zombie to median calc!
+			if (_stats_flag == true) { stats->updateMostLeastActive(zombie); } //upates most/least active when zombie dies.
 			_inactive_deque.push_back(_active_queue.top()); //for first/last killed list
 			_active_queue.pop();//pop zombie
 		}

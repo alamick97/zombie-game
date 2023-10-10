@@ -58,11 +58,12 @@ public:
     bool isMedianOn() const;
     void setGameInfo(); //TODO: Implement
     void refillQuiver();
-    void moveZombies(Stats& stats);//NOTE: This also increments "rounds active" for each active zombie. Should move ea. active Zombie for the round, even if you die.
+    void moveZombies();//NOTE: This also increments "rounds active" for each active zombie. Should move ea. active Zombie for the round, even if you die.
     void pushToMasterList(Zombie* zombie);
     void pushToActiveList(Zombie* zombie);
     //void shootZombies(); //uses quiver_load
-    void shootZombies(Median* median);
+    //void shootZombies(Median* median);
+    void shootZombies(Median* median, Stats* stats);
     void deleteZombies(); //deletes all Zombie ptrs that were created on the heap! Remember to do this!
     void printOutput();//prints output according to input option flags. //TODO: Implement
     void setPlayerIsDeadFlag(); //sets flag to true. To be used when player dies (any zombie has dist=0 after moving.)
@@ -74,7 +75,9 @@ public:
     uint32_t getMaxHealth() const;
     size_t getStatsArg() const;
     size_t getNumZombiesStillActive() const;
+    std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> getActiveZombies();
     const std::deque<Zombie*>& getInactiveZombies() const;
+    const std::deque<Zombie*>& getAllZombies(); //for stats use: most/least active output.
     std::string getNameOfZombieThatKilled() const;
     std::string getNameOfLastZombie() const;
     //============================================================================

@@ -21,6 +21,7 @@ public:
     void updateMostLeastActive(Zombie* zombie);  //active zombies consider all zombies! Not only dead ones!. To be used whenever round_active changes, so after creation and moving.
 	void printFirstZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const;
 	void printLastZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const;
+    void printMostLeastActive(const std::deque<Zombie*>& masterDeque); 
 	void printMostActiveZombies(); //doesnt need to be dead! all zombies!
 	void printLeastActiveZombies(); //dont need to be dead! all zombies!
 };

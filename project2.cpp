@@ -40,7 +40,7 @@ int main (int argc, char** argv) {
 		//STEP 2: refill quiver
 		game.refillQuiver(); //makes _quiver_load = _quiver_capacity, which was found before while loop.
 		//STEP 3: move all ACTIVE zombies and sets _player_is_dead_flag if you get killed (distance for any zombie = 0)
-		game.moveZombies(stats); //NOTE: This also increments "rounds active" for each active zombie. Also updates stats most/least active after moving (since this changes who is most/least active.) 
+		game.moveZombies(); //NOTE: This also increments "rounds active" for each active zombie. Also updates stats most/least active after moving (since this changes who is most/least active.) 
 		//STEP 4: check if you're dead (distance for any zombie = 0)
 		if (game.isPlayerDead()) { break; } //Note: ONLY place to check if you are dead. EVEN IF zombie spawns w/ dist=0, must MOVE first (it must MOVE before ATTACKING!). 
 		
@@ -69,7 +69,7 @@ int main (int argc, char** argv) {
 				//pushes to appropriate lists
 				game.pushToMasterList(randZombie);//push to master list. This must be done in order of creation. 
 				game.pushToActiveList(randZombie);//push to active list 
-				if (game.isStatsOn()) { stats.updateMostLeastActive(randZombie); } //for stats, most/least active output
+				//if (game.isStatsOn()) { stats.updateMostLeastActive(randZombie); } //for stats, most/least active output
 				//verbose output
 				if (game.isVerboseOn()) { randZombie->printCreated(); }
 			}
@@ -84,14 +84,14 @@ int main (int argc, char** argv) {
 				//pushes to appropriate lists
 				game.pushToMasterList(namedZombie);//push to master list. This must be done in order of creation. 
 				game.pushToActiveList(namedZombie);//push to active list 
-				if (game.isStatsOn()) { stats.updateMostLeastActive(namedZombie); } //for stats, most/least active output
+				//if (game.isStatsOn()) { stats.updateMostLeastActive(namedZombie); } //for stats, most/least active output
 				//verbose output
 				if (game.isVerboseOn()) { namedZombie->printCreated(); }
 			}
 			round.next_round = 0; //resets next round
 		}
 		//STEP 6: Shoot zombies
-		game.shootZombies(&median);
+		game.shootZombies(&median, &stats);
 		//FINAL STEP (in loop): Print median! (total for all destroyed zombies in game)
 		//TODO: Finish Median implementation!
 		if (game.isMedianOn()) { //NOTE: Median is for all zombies destroyed thus far in game.
@@ -118,6 +118,13 @@ int main (int argc, char** argv) {
 		stats.printFirstZombiesKilled(game.getInactiveZombies());
 		//-Last n Zombies Killed
 		stats.printLastZombiesKilled(game.getInactiveZombies());
+
+		//update the most/least active list with active zombies
+    	std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> activeZombies = game.getActiveZombies();
+		while (!activeZombies.empty()) {
+			stats.updateMostLeastActive(activeZombies.top());
+			activeZombies.pop();
+		}
 		//-n Most active Zombies (_rounds_active) 
 		stats.printMostActiveZombies();
 		//-n Least active Zombies (_rounds_active) 

@@ -56,12 +56,20 @@ struct ZombieComparator {
 
 struct MostActiveComparator { //for stats, N most active zombies
     bool operator()(const Zombie* z1, const Zombie* z2) const {
-        return z1->getRoundsActive() < z2->getRoundsActive();
+        uint32_t rounds1 = z1->getRoundsActive();        
+        uint32_t rounds2 = z2->getRoundsActive();        
+        if (rounds1 != rounds2)  { return rounds1 < rounds2; }
+
+        return z1->getName() > z2->getName();
     }
 };
 struct LeastActiveComparator { //for stats, N least active zombies
     bool operator()(const Zombie* z1, const Zombie* z2) const {
-        return z1->getRoundsActive() > z2->getRoundsActive();
+        uint32_t rounds1 = z1->getRoundsActive();        
+        uint32_t rounds2 = z2->getRoundsActive();        
+        if (rounds1 != rounds2)  { return rounds1 > rounds2; }
+
+        return z1->getName() > z2->getName();
     }
 };
 

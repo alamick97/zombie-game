@@ -35,6 +35,13 @@ void Stats::printLastZombiesKilled(const std::deque<Zombie*>& inactiveZombies) c
 	}
 }
 
+/* POSSIBLE SIMPLER METHOD, if below fails.
+void Stats::printMostLeastActive(const std::deque<Zombie*>& masterDeque) {
+	//TODO: Implement! See your notes for details!
+}
+*/
+
+// POSSIBLE UNWORKING OVERLY-COMPLEX METHODS
 void Stats::updateMostLeastActive(Zombie* zombie) {
 	if (_most_active_zombies.size() < _stats_arg || 
 		zombie->getRoundsActive() >= _most_active_zombies.top()->getRoundsActive()) {
@@ -48,6 +55,7 @@ void Stats::updateMostLeastActive(Zombie* zombie) {
 	}
 }
 
+//FINE
 void Stats::printMostActiveZombies() { //original way to call most/least active, destroys queues
 	std::cout << "Most active zombies:\n";
 	size_t count = 0;
@@ -57,7 +65,7 @@ void Stats::printMostActiveZombies() { //original way to call most/least active,
 		++count;
 	}
 }
-
+//FINE
 void Stats::printLeastActiveZombies() { //original way to call most/least active, destroys queues
 	std::cout << "Least active zombies:\n";
 	size_t count = 0;
