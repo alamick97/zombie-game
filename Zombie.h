@@ -3,6 +3,7 @@
 #ifndef ZOMBIE_H
 #define ZOMBIE_H
 
+#include <cstdint>
 #include <iostream>
 #include <string>
 

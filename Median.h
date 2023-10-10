@@ -5,6 +5,7 @@
 #ifndef MEDIAN_H
 #define MEDIAN_H
 
+#include <cstdint>
 #include <queue>
 #include <vector>
 class Median {

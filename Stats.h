@@ -4,6 +4,7 @@
 
 #include "Zombie.h"
 #include "Game.h"
+#include <cstdint>
 #include <queue>
 #include <vector>
 
@@ -14,9 +15,9 @@ class Stats {
 
 public:
     void setStatsArg(uint32_t statsArg);
-    void updateMostLeastActive(Zombie* zombie); 
+    void updateMostLeastActive(Zombie* zombie);  //active zombies consider all zombies! Not only dead ones!. To be used whenever round_active changes, so after creation and moving.
 	void printFirstZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const;
 	void printLastZombiesKilled(const std::deque<Zombie*>& inactiveZombies) const;
-	void printMostActiveZombies();
-	void printLeastActiveZombies();
+	void printMostActiveZombies(); //doesnt need to be dead! all zombies!
+	void printLeastActiveZombies(); //dont need to be dead! all zombies!
 };

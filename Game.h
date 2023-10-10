@@ -6,6 +6,7 @@
 #include "Zombie.h"
 #include "Median.h"
 
+#include <cstdint>
 #include <iostream>
 #include <getopt.h>
 #include <deque>

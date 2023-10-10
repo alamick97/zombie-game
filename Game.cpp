@@ -28,7 +28,14 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 				break;
 			case 's':
                 _stats_flag = true;
-                _stats_arg = std::stoul(optarg);
+				unsigned long val = std::stoul(optarg);
+				if (val <= std::numeric_limits<uint32_t>::max()) {
+					_stats_arg = static_cast<uint32_t>(val);
+				} else { 
+					std::cerr << "Input exceeds max value for uint32_t datatype.\n"; 
+					exit(1); 
+				}
+                //_stats_arg = std::stoul(optarg); //this caused AG to throw warning as error (for data loss incase input type exceeded uint32_t value.)
 				break;
 			case 'm':
                 _median_flag = true;
