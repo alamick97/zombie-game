@@ -4,6 +4,7 @@
 
 #include "Stats.h"
 
+
 void Stats::setStatsArg(size_t statsArg) {
 	_stats_arg = statsArg;	
 }
