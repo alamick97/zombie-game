@@ -110,7 +110,6 @@ int main (int argc, char** argv) {
 		std::cout << game.getNameOfLastZombie() << " was the last zombie.\n";
 	}
 
-	//TODO: Use stats.cpp/.h here. Todo after 
 	//STATISTICS OUTPUT:
 	if (game.isStatsOn()) {
 		//Needs:
@@ -121,14 +120,6 @@ int main (int argc, char** argv) {
 		//-Last n Zombies Killed
 		stats.printLastZombiesKilled(game.getInactiveZombies());
 
-		/*
-		//update the most/least active list with active zombies
-    	std::priority_queue<Zombie*, std::vector<Zombie*>, ZombieComparator> activeZombies = game.getActiveZombies();
-		while (!activeZombies.empty()) {
-			stats.updateMostLeastActive(activeZombies.top());
-			activeZombies.pop();
-		}
-		*/
 		stats.determineMostLeastActive(game.getAllZombies());
 		//-n Most active Zombies (_rounds_active) 
 		stats.printMostActiveZombies();
@@ -136,52 +127,8 @@ int main (int argc, char** argv) {
 		stats.printLeastActiveZombies();
 	}
 
-	//AT THE VERY END OF THE PROGRAM, WHEN NO ZOMBIES/CONTAINERS NEEDED ANYMORE.
-	//when done w/ using all Zombie ptrs, delete them!! (prevent memory leaks!). deleteZombies() also clears all containers 
-		//of Zombie*, freeing memory and preventing dangling ptrs..
+	//deletes all dangling zombie ptrs to prevent memory leaks. 
 	game.deleteZombies(); //deletes all Zombie ptrs created on the heap during the while loop! Must be done to prevent mem leaks!
 
 	return 0;
 }
-
-//=========================ORIGINAL PROFFICE NOTES END HERE===============================================================
-		//IF NEW ZOMBIES GENERATED (CURR_ROUND == NEXT_ROUND):
-		//read in new zombies (if apploiabel)
-			//create zombie from cin info
-				//NOTE: remember to increment rounds active at some point during the round, for each active zombie!
-			//then push into deque
-		//when create zombies, push into master
-		//	then push the zombie ptrs into active_list (PQ) {make sure the address of the zombie pushed into master list is same as 
-		//		that pushed into active list PQ}	
-
-
-
-		//shoot zombie from top of PQ until zombie is dead, or out of arrows (ONLY 1 OF 2 OF THESE SITUATIONS CAN HAPPEN!)
-			//dont want to shoot one at a time, that will take too long. Instead, you want to check how much the zombie's health
-			//is. Make a function for this. If the zombie's health is less than your quiver capacity, then kill that zombie, update
-			//quiver load, and move on to the next zombie. Idea: can make a while loop for quivers != 0, and have two conditions:
-			//PSEUDO:
-			//quiver_load = quiver_capacity
-			//while(quiver load != 0)
-			//1) if (quiver capacity > zombie health): reduce health by appropriate amount, then go to next zombie
-			//2) else { zombie_health = zombie_health - quiver_load}
-
-
-		//NOTE: PQ implementation, in general, should all be hardcoded into this while loop.
-
-		//pseudo: from cin, add zombies to the master & active lists (at same time?)
-
-		//pseudo: If zombie health is 0 (after shooting), then move it from the active list to inactive list.
-		/*
-		//STEPS LAID OUT IN SPEC:
-		//(step 1): player refills quiver so it contains quiver_capacity arrows
-		//(step 2): existing zombies move toward the player and attack if they have reached the player
-		//(step 3): new zombies appear
-		//(step 4): player shoots zombies with arrows
-					//NOTE: At STEP 4, if player is dead, BREAK from the loop.
-		*/
-		//(STEP 5 (additional, paoletti description)): "check round with next round", current round is incremented with each while loop.
-
-	//NOTE: can implement everything w/o statistics and median, just do that afterwords (only implement w/ verbose, helps debugging)
-
-//=========================ORIGINAL PROFFICE/OFFICE NOTES END HERE===============================================================

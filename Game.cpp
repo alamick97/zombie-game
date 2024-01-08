@@ -18,7 +18,7 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 		{"verbose", no_argument, 0, 'v'},	//no arg req
 		{"statistics", required_argument, 0, 's'},	//uint32_t arg req
 		{"median", no_argument, 0, 'm'},	//no arg req
-		{"help", no_argument, 0, 'h'},	//arg req.
+		{"help", no_argument, 0, 'h'},	//no arg req.
 	};
 
 	while ((opt = getopt_long(_argc, _argv, "vs:mh", long_opts, &opt_idx)) != -1) {
@@ -28,15 +28,6 @@ Game::Game(int argc, char** argv) : _argc(argc), _argv(argv) { //default constru
 				break;
 			case 's':
                 _stats_flag = true;
-				/*
-				unsigned long val = std::stoul(optarg);
-				if (val <= std::numeric_limits<uint32_t>::max()) {
-					_stats_arg = static_cast<uint32_t>(val);
-				} else { 
-					std::cerr << "Input exceeds max value for uint32_t datatype.\n"; 
-					exit(1); 
-				}
-				*/
                 _stats_arg = std::stoul(optarg); //this caused AG to throw warning as error (for data loss incase input type exceeded uint32_t value.)
 				break;
 			case 'm':
@@ -120,24 +111,6 @@ void Game::pushToActiveList(Zombie* zombie) { //note: we are pushing to a PQ tha
 	_active_queue.push(zombie);
 }
 
-/*
-void Game::shootZombies() { //for use if median not enabled
-	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
-		Zombie* zombie = _active_queue.top();//get zombie from active list (PQ)
-		uint32_t dmg = std::min(_quiver_load, zombie->getHealth());
-		_quiver_load -= dmg;
-		uint32_t newHealth = zombie->getHealth() - dmg;
-		zombie->setHealth(newHealth);
-
-		if (zombie->getHealth() == 0) {
-			if (isVerboseOn()) { zombie->printDestroyed(); }
-			_inactive_deque.push_back(_active_queue.top()); //for first/last killed list
-			_active_queue.pop();//pop zombie
-		}
-	}
-}
-*/
-
 void Game::shootZombies(Median* median) {  //for use if median enabled
 	while (_quiver_load != 0 && !_active_queue.empty()) { //when quiver_load isn't empty AND active_list isn't empty (need to check here, since zombies get popped from active list.)
 		Zombie* zombie = _active_queue.top();//get zombie from active list (PQ)
@@ -166,13 +139,3 @@ void Game::deleteZombies() { //deletes all zombie ptrs, which are all stored in 
 }
 
 bool Game::areZombiesActive() const { return !_active_queue.empty(); }
-
-
-//============================================================================
-//FOR DEBUGGING (START)
-void Game::printMasterDeque() const {
-	for (Zombie* zombie : _master_deque) {
-		std::cout << "zombie health: " << zombie->getHealth() << "\n";	
-	}
-}
-//FOR DEBUGGING (END)

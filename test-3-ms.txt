@@ -1,4 +1,4 @@
-# Project 2 Test 1
+# Project 2 Test 3
 quiver-capacity: 13
 random-seed: 381322
 max-rand-distance: 37
